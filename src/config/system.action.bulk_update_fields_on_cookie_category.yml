@@ -1,0 +1,11 @@
+uuid: d7cf632c-b896-48d6-a772-142c5376c46a
+langcode: en
+status: true
+dependencies:
+  module:
+    - bulk_update_fields
+id: bulk_update_fields_on_cookie_category
+label: 'Bulk Update Cookie category Fields'
+type: cookie_category
+plugin: bulk_update_fields_action_base
+configuration: {  }

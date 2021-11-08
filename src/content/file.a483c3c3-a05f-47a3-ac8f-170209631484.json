@@ -1,0 +1,50 @@
+{
+    "uuid": [
+        {
+            "value": "a483c3c3-a05f-47a3-ac8f-170209631484"
+        }
+    ],
+    "langcode": [
+        {
+            "value": "en"
+        }
+    ],
+    "uid": [],
+    "filename": [
+        {
+            "value": "Footer.png"
+        }
+    ],
+    "uri": [
+        {
+            "value": "public:\/\/element-preview-images\/Footer.png"
+        }
+    ],
+    "filemime": [
+        {
+            "value": "image\/png"
+        }
+    ],
+    "filesize": [
+        {
+            "value": 179
+        }
+    ],
+    "status": [
+        {
+            "value": true
+        }
+    ],
+    "created": [
+        {
+            "value": "2021-10-19T17:07:06+00:00",
+            "format": "Y-m-d\\TH:i:sP"
+        }
+    ],
+    "changed": [
+        {
+            "value": "2021-10-19T17:07:06+00:00",
+            "format": "Y-m-d\\TH:i:sP"
+        }
+    ]
+}

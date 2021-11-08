@@ -1,0 +1,50 @@
+{
+    "uuid": [
+        {
+            "value": "d20245c2-3660-42ce-b545-ea460d80dda3"
+        }
+    ],
+    "langcode": [
+        {
+            "value": "en"
+        }
+    ],
+    "uid": [],
+    "filename": [
+        {
+            "value": "Breadcrumbs.png"
+        }
+    ],
+    "uri": [
+        {
+            "value": "public:\/\/element-preview-images\/Breadcrumbs.png"
+        }
+    ],
+    "filemime": [
+        {
+            "value": "image\/png"
+        }
+    ],
+    "filesize": [
+        {
+            "value": 651
+        }
+    ],
+    "status": [
+        {
+            "value": true
+        }
+    ],
+    "created": [
+        {
+            "value": "2021-10-19T17:07:06+00:00",
+            "format": "Y-m-d\\TH:i:sP"
+        }
+    ],
+    "changed": [
+        {
+            "value": "2021-10-19T17:07:06+00:00",
+            "format": "Y-m-d\\TH:i:sP"
+        }
+    ]
+}

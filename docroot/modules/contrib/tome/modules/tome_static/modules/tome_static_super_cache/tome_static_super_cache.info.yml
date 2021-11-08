@@ -1,0 +1,8 @@
+name: 'Tome Static Super Cache'
+type: module
+description: 'Changes core and Tome Static caching behavior to keep static builds cached longer.'
+core: 8.x
+core_version_requirement: ^8 || ^9
+package: Tome
+dependencies:
+  - tome:tome_static

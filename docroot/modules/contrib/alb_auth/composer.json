@@ -1,0 +1,22 @@
+{
+    "name": "drupal/alb_auth",
+    "description": "Authenticate to Drupal based on headers provided by an AWS Application Load Balancer",
+    "type": "drupal-module",
+    "require": {
+        "web-token/jwt-framework": "^1.2",
+        "php": "^7.1"
+    },
+    "authors": [
+        {
+            "name": "John Morahan (john-morahan)",
+            "email": "john@invotra.co",
+            "homepage": "https://www.drupal.org/u/john-morahan",
+            "role": "Maintainer"
+        }
+    ],
+    "support": {
+      "issues": "https://drupal.org/project/issues/alb_auth",
+      "source": "https://cgit.drupalcode.org/alb_auth"
+    },
+    "license": "GPL-2.0-or-later"
+}

@@ -1,0 +1,6 @@
+alb_auth.admin_settings:
+  title: 'ALB Authentication'
+  description: 'Authenticate users to Drupal from an AWS Application Load Balancer'
+  parent: user.admin_index
+  route_name: alb_auth.admin_settings
+  weight: 99

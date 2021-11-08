@@ -1,0 +1,50 @@
+{
+    "uuid": [
+        {
+            "value": "c9974937-ebdb-4b14-ad1f-c4a2eb227eef"
+        }
+    ],
+    "langcode": [
+        {
+            "value": "en"
+        }
+    ],
+    "uid": [],
+    "filename": [
+        {
+            "value": "Container.png"
+        }
+    ],
+    "uri": [
+        {
+            "value": "public:\/\/element-preview-images\/Container.png"
+        }
+    ],
+    "filemime": [
+        {
+            "value": "image\/png"
+        }
+    ],
+    "filesize": [
+        {
+            "value": 897
+        }
+    ],
+    "status": [
+        {
+            "value": true
+        }
+    ],
+    "created": [
+        {
+            "value": "2021-10-19T17:07:06+00:00",
+            "format": "Y-m-d\\TH:i:sP"
+        }
+    ],
+    "changed": [
+        {
+            "value": "2021-10-19T17:07:06+00:00",
+            "format": "Y-m-d\\TH:i:sP"
+        }
+    ]
+}

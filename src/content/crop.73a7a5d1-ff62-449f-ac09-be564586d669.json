@@ -1,0 +1,69 @@
+{
+    "uuid": [
+        {
+            "value": "73a7a5d1-ff62-449f-ac09-be564586d669"
+        }
+    ],
+    "type": [
+        {
+            "target_id": "focal_point",
+            "target_type": "crop_type",
+            "target_uuid": "f7448599-37cf-4658-b4f8-7f93eccf30ba"
+        }
+    ],
+    "langcode": [
+        {
+            "value": "en"
+        }
+    ],
+    "entity_id": [
+        {
+            "value": 2
+        }
+    ],
+    "entity_type": [
+        {
+            "value": "file"
+        }
+    ],
+    "uri": [
+        {
+            "value": "public:\/\/media-icons\/generic\/no-thumbnail.png"
+        }
+    ],
+    "height": [],
+    "width": [],
+    "x": [
+        {
+            "value": 90
+        }
+    ],
+    "y": [
+        {
+            "value": 90
+        }
+    ],
+    "revision_timestamp": [
+        {
+            "value": "2021-10-19T17:06:18+00:00",
+            "format": "Y-m-d\\TH:i:sP"
+        }
+    ],
+    "revision_uid": [
+        {
+            "target_type": "user",
+            "target_uuid": "46b67a39-bdd8-4dcb-a7cf-246d5a04ef49"
+        }
+    ],
+    "revision_log": [],
+    "default_langcode": [
+        {
+            "value": true
+        }
+    ],
+    "revision_translation_affected": [
+        {
+            "value": true
+        }
+    ]
+}

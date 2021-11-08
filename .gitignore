@@ -1,0 +1,163 @@
+settings.local.php
+
+docroot/vendor
+docroot/web
+docroot/static
+docroot/drush
+docroot/html
+.idea
+docroot/files/temporary/
+
+node_modules/
+npm-debug.log*
+.npm
+
+provision/**/*.js
+provision/**/*.d.ts
+provision/dist
+provision/**/cdk.out/
+provision/**/cdk.context.json
+
+.DS_Store
+
+.ht.sqlite*
+cghooks.lock
+post_schema_to_keystone_creds.py
+
+# Python
+*.pyc
+
+# Ignore configuration files that may contain sensitive information.
+local.settings.php
+local.drush.yml
+local.site.yml
+local.services.yml
+tests/behat/local.yml
+box/local.config.yml
+*.local
+local.blt.yml
+.lando.local.yml
+
+# Ignore build artifacts
+deployment_identifier
+/deploy
+tmp
+reports
+
+# OS X
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Thumbnails
+._*
+
+# Files that might appear on external disk
+.Spotlight-V100
+.Trashes
+
+# Windows image file caches
+Thumbs.db
+ehthumbs.db
+
+# Folder config file
+Desktop.ini
+
+# Recycle Bin used on file shares
+$RECYCLE.BIN/
+
+# Eclipse
+*.pydevproject
+.project
+.metadata
+tmp/**
+tmp/**/*
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+.classpath
+.settings/
+.loadpath
+
+# External tool builders
+.externalToolBuilders/
+
+# Locally stored "Eclipse launch configurations"
+*.launch
+
+# CDT-specific
+.cproject
+
+# PDT-specific
+.buildpathk
+
+# Emacs
+*~
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+*.elc
+auto-save-list
+tramp
+.\#*
+
+# User-specific stuff:
+.vscode
+.idea/
+
+#XHProf
+xhprof_*
+
+#Composer vendor
+vendor/
+vendor/.git
+
+#Sass
+.sass-cache
+*.css.map
+
+#Netbeans IDE
+nbproject
+nbproject/*
+
+# DrupalVM
+.vagrant/
+
+# DevDesktop
+*.dd
+
+#Exports
+*.gz
+*.sql
+*.zip
+!site-releases/*.zip
+
+# PHPStorm
+atlassian-ide-plugin.xml
+
+#NPM
+npm-debug.log
+
+# Drush 9 Checksums
+drush/sites/.checksums
+
+# Deprecation detector rules
+.rules
+
+# node
+node_modules/
+npm-debug.log*
+.npm
+
+provision/**/*.js
+provision/**/*.d.ts
+provision/dist
+provision/cdk.out/
+provision/cdk.context.json
+
+# Python
+*.pyc
+devops/post_schema_to_keystone_creds.py
+devops/*.csv

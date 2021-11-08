@@ -1,0 +1,50 @@
+{
+    "uuid": [
+        {
+            "value": "0505a1ef-46ef-42f8-82ea-9ca8b3bca75b"
+        }
+    ],
+    "langcode": [
+        {
+            "value": "en"
+        }
+    ],
+    "uid": [],
+    "filename": [
+        {
+            "value": "Row for columns.png"
+        }
+    ],
+    "uri": [
+        {
+            "value": "public:\/\/element-preview-images\/Row for columns.png"
+        }
+    ],
+    "filemime": [
+        {
+            "value": "image\/png"
+        }
+    ],
+    "filesize": [
+        {
+            "value": 987
+        }
+    ],
+    "status": [
+        {
+            "value": true
+        }
+    ],
+    "created": [
+        {
+            "value": "2021-10-19T17:07:06+00:00",
+            "format": "Y-m-d\\TH:i:sP"
+        }
+    ],
+    "changed": [
+        {
+            "value": "2021-10-19T17:07:06+00:00",
+            "format": "Y-m-d\\TH:i:sP"
+        }
+    ]
+}

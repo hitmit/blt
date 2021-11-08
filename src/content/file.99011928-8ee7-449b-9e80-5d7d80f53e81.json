@@ -1,0 +1,50 @@
+{
+    "uuid": [
+        {
+            "value": "99011928-8ee7-449b-9e80-5d7d80f53e81"
+        }
+    ],
+    "langcode": [
+        {
+            "value": "en"
+        }
+    ],
+    "uid": [],
+    "filename": [
+        {
+            "value": "Events slider.png"
+        }
+    ],
+    "uri": [
+        {
+            "value": "public:\/\/element-preview-images\/Events slider.png"
+        }
+    ],
+    "filemime": [
+        {
+            "value": "image\/png"
+        }
+    ],
+    "filesize": [
+        {
+            "value": 1385
+        }
+    ],
+    "status": [
+        {
+            "value": true
+        }
+    ],
+    "created": [
+        {
+            "value": "2021-10-19T17:07:06+00:00",
+            "format": "Y-m-d\\TH:i:sP"
+        }
+    ],
+    "changed": [
+        {
+            "value": "2021-10-19T17:07:06+00:00",
+            "format": "Y-m-d\\TH:i:sP"
+        }
+    ]
+}

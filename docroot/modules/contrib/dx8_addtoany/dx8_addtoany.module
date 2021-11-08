@@ -1,0 +1,18 @@
+<?php
+
+/**
+ * Implements hook_theme().
+ */
+function dx8_addtoany_theme($existing, $type, $theme, $path)
+{
+  return [
+    'addtoany_template' => [
+      'variables' => [
+        'linkTitle' => '',
+        'elementSettings' => NULL,
+        'elementClasses' => NULL,
+        'elementAttributes' => NULL,
+      ],
+    ],
+  ];
+}

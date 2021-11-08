@@ -1,0 +1,16 @@
+uuid: 0fe1c6d3-9f78-41ec-ab5c-ad5d1d333ded
+langcode: en
+status: false
+dependencies: {  }
+id: media_audio_large
+label: 'Large (Media, Audio)'
+last_entity_update: entityupdate_0031
+modified: false
+selectable: false
+custom: false
+twig_template: null
+default: false
+entity_type: media
+bundle: audio
+view_mode: large
+master_template: ''

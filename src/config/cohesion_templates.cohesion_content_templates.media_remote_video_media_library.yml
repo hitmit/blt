@@ -1,0 +1,16 @@
+uuid: cba6ba01-b4b5-4d55-84b6-9fb22520c209
+langcode: en
+status: false
+dependencies: {  }
+id: media_remote_video_media_library
+label: 'Media library (Media, Remote video)'
+last_entity_update: entityupdate_0031
+modified: false
+selectable: false
+custom: false
+twig_template: null
+default: false
+entity_type: media
+bundle: remote_video
+view_mode: media_library
+master_template: ''

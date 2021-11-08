@@ -1,0 +1,16 @@
+uuid: 8c67455b-8f09-425d-86f7-6efeac89738e
+langcode: en
+status: false
+dependencies: {  }
+id: media_remote_video_small_landsca
+label: 'Small landscape (Media, Remote video)'
+last_entity_update: entityupdate_0031
+modified: false
+selectable: false
+custom: false
+twig_template: null
+default: false
+entity_type: media
+bundle: remote_video
+view_mode: small_landscape
+master_template: ''

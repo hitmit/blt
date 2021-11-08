@@ -1,0 +1,23 @@
+uuid: 8aeb09a1-8035-419b-9ac9-daf47882311c
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_seo_keywords
+    - node.type.page
+_core:
+  default_config_hash: XQBA-FHQbaYhrzAPfTWlxezt_OBkjg9iBwip4EBDEDU
+id: node.page.field_seo_keywords
+field_name: field_seo_keywords
+entity_type: node
+bundle: page
+label: 'SEO Keywords'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings: {  }
+field_type: entity_reference

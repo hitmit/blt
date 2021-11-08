@@ -1,0 +1,16 @@
+uuid: 07a2972a-70d9-4450-bb9e-b460a05835bf
+langcode: en
+status: false
+dependencies: {  }
+id: comment___any___token
+label: 'Token (Comment)'
+last_entity_update: entityupdate_0031
+modified: false
+selectable: false
+custom: false
+twig_template: null
+default: false
+entity_type: comment
+bundle: __any__
+view_mode: token
+master_template: ''

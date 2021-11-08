@@ -1,0 +1,11 @@
+uuid: 698acc34-bd03-45b1-9150-1aae7bff6854
+langcode: en
+status: true
+dependencies:
+  module:
+    - bulk_update_fields
+id: bulk_update_fields_on_geocoder_provider
+label: 'Bulk Update Geocoder provider Fields'
+type: geocoder_provider
+plugin: bulk_update_fields_action_base
+configuration: {  }

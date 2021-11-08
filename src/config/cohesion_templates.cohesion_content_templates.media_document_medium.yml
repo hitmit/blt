@@ -1,0 +1,16 @@
+uuid: b4654d92-ba52-465b-831e-e69f55ad8da4
+langcode: en
+status: false
+dependencies: {  }
+id: media_document_medium
+label: 'Medium (Media, Document)'
+last_entity_update: entityupdate_0031
+modified: false
+selectable: false
+custom: false
+twig_template: null
+default: false
+entity_type: media
+bundle: document
+view_mode: medium
+master_template: ''

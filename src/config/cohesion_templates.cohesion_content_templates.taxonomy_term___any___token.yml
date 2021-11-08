@@ -1,0 +1,16 @@
+uuid: 74fb2b4a-f066-4139-8408-f01b335918de
+langcode: en
+status: false
+dependencies: {  }
+id: taxonomy_term___any___token
+label: 'Token (Taxonomy_term)'
+last_entity_update: entityupdate_0031
+modified: false
+selectable: false
+custom: false
+twig_template: null
+default: false
+entity_type: taxonomy_term
+bundle: __any__
+view_mode: token
+master_template: ''

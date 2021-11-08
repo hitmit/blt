@@ -1,0 +1,21 @@
+diff --git a/src/Importer.php b/src/Importer.php
+index e062781..f45dc98 100644
+--- a/src/Importer.php
++++ b/src/Importer.php
+@@ -16,6 +16,7 @@ use Drupal\hal\LinkManager\LinkManagerInterface;
+ use Drupal\user\EntityOwnerInterface;
+ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+ use Symfony\Component\Serializer\Serializer;
++use Drupal\Core\Session\UserSession;
+ 
+ /**
+  * A service for handling import of default content.
+@@ -133,7 +134,7 @@ class Importer implements ImporterInterface {
+     $folder = drupal_get_path('module', $module) . "/content";
+ 
+     if (file_exists($folder)) {
+-      $root_user = $this->entityTypeManager->getStorage('user')->load(1);
++      $root_user = new UserSession(['uid' => 1]);
+       $this->accountSwitcher->switchTo($root_user);
+       $file_map = [];
+       foreach ($this->entityTypeManager->getDefinitions() as $entity_type_id => $entity_type) {

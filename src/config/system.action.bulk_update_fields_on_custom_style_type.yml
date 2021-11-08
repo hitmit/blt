@@ -1,0 +1,11 @@
+uuid: a3be5f61-2f6e-4386-b98d-4daaee4828a4
+langcode: en
+status: true
+dependencies:
+  module:
+    - bulk_update_fields
+id: bulk_update_fields_on_custom_style_type
+label: 'Bulk Update Custom style type Fields'
+type: custom_style_type
+plugin: bulk_update_fields_action_base
+configuration: {  }

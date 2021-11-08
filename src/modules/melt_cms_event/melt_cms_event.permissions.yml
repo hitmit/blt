@@ -1,0 +1,4 @@
+administer melt_cms_event configuration:
+  title: 'Administer melt_cms_event configuration'
+  description: 'Optional description.'
+  restrict access: true

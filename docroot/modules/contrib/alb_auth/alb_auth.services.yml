@@ -1,0 +1,17 @@
+services:
+  alb_auth.event_subscriber:
+    class: Drupal\alb_auth\EventSubscriber\ALBAuthenticationSubscriber
+    arguments: ['@entity_type.manager', '@config.factory', '@alb_auth.claims_extractor']
+    tags:
+      - { name: event_subscriber }
+  alb_auth.route_subscriber:
+    class: Drupal\alb_auth\Routing\RouteSubscriber
+    tags:
+      - { name: event_subscriber }
+  alb_auth.claims_extractor:
+    class: Drupal\alb_auth\Claims\ALBClaimsExtractor
+    arguments: ['@alb_auth.key_resolver']
+  alb_auth.key_resolver:
+    class: Drupal\alb_auth\Claims\ALBKeyResolver
+    arguments: ['@cache.default', '@config.factory', '@http_client']
+    

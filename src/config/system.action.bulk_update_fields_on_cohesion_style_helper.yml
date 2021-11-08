@@ -1,0 +1,11 @@
+uuid: 7cf2b5ab-f0a2-4184-b3b7-0bc0affc8c10
+langcode: en
+status: true
+dependencies:
+  module:
+    - bulk_update_fields
+id: bulk_update_fields_on_cohesion_style_helper
+label: 'Bulk Update Style helper Fields'
+type: cohesion_style_helper
+plugin: bulk_update_fields_action_base
+configuration: {  }

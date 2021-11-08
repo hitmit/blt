@@ -1,0 +1,4 @@
+aws_region: us-east-1
+cookie_name: AWSELBAuthSessionCookie-0
+enabled: false
+provision: true

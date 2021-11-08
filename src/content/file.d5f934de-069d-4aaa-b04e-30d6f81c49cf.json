@@ -1,0 +1,50 @@
+{
+    "uuid": [
+        {
+            "value": "d5f934de-069d-4aaa-b04e-30d6f81c49cf"
+        }
+    ],
+    "langcode": [
+        {
+            "value": "en"
+        }
+    ],
+    "uid": [],
+    "filename": [
+        {
+            "value": "icomoon.woff"
+        }
+    ],
+    "uri": [
+        {
+            "value": "public:\/\/cohesion\/icomoon.woff"
+        }
+    ],
+    "filemime": [
+        {
+            "value": "application\/octet-stream"
+        }
+    ],
+    "filesize": [
+        {
+            "value": 184272
+        }
+    ],
+    "status": [
+        {
+            "value": true
+        }
+    ],
+    "created": [
+        {
+            "value": "2021-10-19T17:07:06+00:00",
+            "format": "Y-m-d\\TH:i:sP"
+        }
+    ],
+    "changed": [
+        {
+            "value": "2021-10-19T17:07:06+00:00",
+            "format": "Y-m-d\\TH:i:sP"
+        }
+    ]
+}

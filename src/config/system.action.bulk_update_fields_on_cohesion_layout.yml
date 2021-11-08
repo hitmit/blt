@@ -1,0 +1,11 @@
+uuid: 5f2aa226-a176-4f8b-a595-07bdf7006a49
+langcode: en
+status: true
+dependencies:
+  module:
+    - bulk_update_fields
+id: bulk_update_fields_on_cohesion_layout
+label: 'Bulk Update Layout canvas Fields'
+type: cohesion_layout
+plugin: bulk_update_fields_action_base
+configuration: {  }

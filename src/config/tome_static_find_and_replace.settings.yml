@@ -1,0 +1,5 @@
+environments:
+  static:
+    label: 'Static Site'
+_core:
+  default_config_hash: 1COKhzz6OQ7s2zEv33sBYMmqESJJ-isfxJPGXW2Ebas

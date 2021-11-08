@@ -1,0 +1,11 @@
+uuid: bc8755de-567a-4032-8ca3-9824fb306498
+langcode: en
+status: true
+dependencies:
+  module:
+    - bulk_update_fields
+id: bulk_update_fields_on_context
+label: 'Bulk Update Context Fields'
+type: context
+plugin: bulk_update_fields_action_base
+configuration: {  }

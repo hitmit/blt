@@ -1,0 +1,16 @@
+uuid: ec7d30ea-061d-40a7-87dd-a9ffe6b2ff69
+langcode: en
+status: false
+dependencies: {  }
+id: media___any___small_landscape
+label: 'Small landscape (Media)'
+last_entity_update: entityupdate_0031
+modified: false
+selectable: false
+custom: false
+twig_template: null
+default: false
+entity_type: media
+bundle: __any__
+view_mode: small_landscape
+master_template: ''

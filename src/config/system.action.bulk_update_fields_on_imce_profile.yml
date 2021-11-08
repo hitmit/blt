@@ -1,0 +1,11 @@
+uuid: fc974377-1c77-4a99-9264-4d191ae4f865
+langcode: en
+status: true
+dependencies:
+  module:
+    - bulk_update_fields
+id: bulk_update_fields_on_imce_profile
+label: 'Bulk Update Imce Profile Fields'
+type: imce_profile
+plugin: bulk_update_fields_action_base
+configuration: {  }

@@ -1,0 +1,21 @@
+diff --git a/src/EventSubscriber/ALBAuthenticationSubscriber.php b/src/EventSubscriber/ALBAuthenticationSubscriber.php
+index ee186e6..483dc41 100644
+--- a/src/EventSubscriber/ALBAuthenticationSubscriber.php
++++ b/src/EventSubscriber/ALBAuthenticationSubscriber.php
+@@ -77,8 +77,15 @@ class ALBAuthenticationSubscriber implements EventSubscriberInterface {
+     if (!$this->config->get('enabled')) {
+       return;
+     }
+-
++    
+     $request = $event->getRequest();
++    $token = $request->headers->get('X_AMZN_OIDC_DATA');
++
++    // Ignore request without 'X_AMZN_OIDC_DATA' header set
++    if (!isset($token)) {
++      return;
++    }
++    
+     $claims = $this->claimsExtractor->getClaimsFromRequest($request);
+     $username = $claims->username;
+     if ($accounts = $this->entityManager

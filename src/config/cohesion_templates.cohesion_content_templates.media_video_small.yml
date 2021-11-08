@@ -1,0 +1,16 @@
+uuid: a74002dd-fac9-44da-b816-3f150d57308a
+langcode: en
+status: false
+dependencies: {  }
+id: media_video_small
+label: 'Small (Media, Video)'
+last_entity_update: entityupdate_0031
+modified: false
+selectable: false
+custom: false
+twig_template: null
+default: false
+entity_type: media
+bundle: video
+view_mode: small
+master_template: ''

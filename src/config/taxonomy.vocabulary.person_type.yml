@@ -1,0 +1,13 @@
+uuid: 30be49b0-8437-4e54-b0bf-0801de4a7277
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - acquia_cms_person
+_core:
+  default_config_hash: LAOdQgz_DIrLAEj5f9J35KffnVjt4Jm3VBQ-z4w10cQ
+name: 'Person Type'
+vid: person_type
+description: 'Descriptive metadata, for categorizing content and making search engines happy.'
+weight: 0

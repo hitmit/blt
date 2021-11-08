@@ -1,0 +1,16 @@
+uuid: 22e497d2-e298-4f94-bb36-f442486720ea
+langcode: en
+status: false
+dependencies: {  }
+id: node_article_token
+label: 'Token (Node, Article)'
+last_entity_update: entityupdate_0031
+modified: false
+selectable: false
+custom: false
+twig_template: null
+default: false
+entity_type: node
+bundle: article
+view_mode: token
+master_template: ''

@@ -1,0 +1,9 @@
+# Custom module library for general purposes.
+# melt_cms_page:
+#   js:
+#     js/melt-cms-page.js: {}
+#   css:
+#     component:
+#       css/melt-cms-page.css: {}
+#   dependencies:
+#     - core/drupalSettings

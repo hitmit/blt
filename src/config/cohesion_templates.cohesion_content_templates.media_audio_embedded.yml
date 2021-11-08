@@ -1,0 +1,16 @@
+uuid: a9303fe3-77ae-40a7-a911-cedc2294d08f
+langcode: en
+status: false
+dependencies: {  }
+id: media_audio_embedded
+label: 'Embedded (Media, Audio)'
+last_entity_update: entityupdate_0031
+modified: false
+selectable: false
+custom: false
+twig_template: null
+default: false
+entity_type: media
+bundle: audio
+view_mode: embedded
+master_template: ''

@@ -1,0 +1,212 @@
+diff --git a/src/Controller/CohesionDrupalEndpointController.php b/src/Controller/CohesionDrupalEndpointController.php
+index 7a291a7..d6b2cec 100644
+--- a/src/Controller/CohesionDrupalEndpointController.php
++++ b/src/Controller/CohesionDrupalEndpointController.php
+@@ -384,8 +384,7 @@ class CohesionDrupalEndpointController extends ControllerBase {
+       $query_split = explode('::', $typed_string);
+       if (isset($query_split[0])) {
+         if ($query_split[0] == 'view' && isset($query_split[1]) && isset($query_split[2])) {
+-          if ($view_type = $this->entityTypeManager->getStorage('view')) {
+-            $view = $view_type->load($query_split[1]);
++          if ($view = $this->loadEntity('view', $query_split[1])) {
+             if ($view->access('view', \Drupal::currentUser())) {
+               $executable = $view->getExecutable();
+               $executable->initDisplay();
+@@ -398,7 +397,7 @@ class CohesionDrupalEndpointController extends ControllerBase {
+                   }
+                   $grouped_data['views'][] = [
+                     'name' => "{$view->label()} - {$this->t($display->display['display_title'])}  (/{$display->getPath()})",
+-                    'id' => 'view::' . $view->id() . '::' . $display_id,
++                    'id' => 'view::' . $view->uuid() . '::' . $display_id,
+                     'group' => $this->t('Views'),
+                   ];
+                 }
+@@ -406,11 +405,9 @@ class CohesionDrupalEndpointController extends ControllerBase {
+             }
+           }
+         }
+-        elseif (isset($query_split[1]) && is_numeric($query_split[1])) {
+-          $entity_type = $this->entityTypeManager->getStorage($query_split[0]);
+-          if ($entity_type) {
+-            /** @var \Drupal\Core\Entity\ContentEntityInterface $entity */
+-            $entity = $entity_type->load($query_split[1]);
++        elseif (isset($query_split[1])) {
++          /** @var \Drupal\Core\Entity\ContentEntityInterface $entity */
++          if ($entity = $this->loadEntity($query_split[0], $query_split[1])) {
+             if ($entity && $entity->access('view', \Drupal::currentUser()) && $entity->hasLinkTemplate('canonical')) {
+               if (!isset($grouped_data[$entity->getEntityType()->id()])) {
+                 $grouped_data[$entity->getEntityType()->id()] = [];
+@@ -420,7 +417,7 @@ class CohesionDrupalEndpointController extends ControllerBase {
+               }
+               $grouped_data[$entity->getEntityType()->id()][] = [
+                 'name' => $entity->label(),
+-                'id' => $query_split[0] . '::' . $entity->id(),
++                'id' => $query_split[0] . '::' . $entity->uuid(),
+                 'group' => $entity->getEntityType()->getLabel(),
+               ];
+             }
+@@ -429,12 +426,10 @@ class CohesionDrupalEndpointController extends ControllerBase {
+       }
+
+       // Search via content entity ID.
+-      if (!count($grouped_data) && is_numeric($typed_string) && $typed_string > 0) {
++      if (!count($grouped_data) && (is_numeric($typed_string) || $this->isUuid($typed_string)) && $typed_string > 0) {
+         foreach ($content_entity_types as $content_entity_type) {
+-          $entity_type = $this->entityTypeManager->getStorage($content_entity_type->id());
+-          if ($entity_type) {
+-            /** @var \Drupal\Core\Entity\ContentEntityInterface $entity */
+-            $entity = $entity_type->load($typed_string);
++          /** @var \Drupal\Core\Entity\ContentEntityInterface $entity */
++          if ($entity = $this->loadEntity($content_entity_type->id(), $typed_string)) {
+             if ($entity && $entity->access('view', \Drupal::currentUser()) && $entity->hasLinkTemplate('canonical')) {
+               if (!isset($grouped_data[$content_entity_type->id()])) {
+                 $grouped_data[$content_entity_type->id()] = [];
+@@ -444,7 +439,7 @@ class CohesionDrupalEndpointController extends ControllerBase {
+               }
+               $grouped_data[$content_entity_type->id()][] = [
+                 'name' => $entity->label(),
+-                'id' => $content_entity_type->id() . '::' . $entity->id(),
++                'id' => $content_entity_type->id() . '::' . $entity->uuid(),
+                 'group' => $content_entity_type->getLabel(),
+               ];
+             }
+@@ -471,14 +466,14 @@ class CohesionDrupalEndpointController extends ControllerBase {
+                 preg_match('#.*\(([^)]+)\)#', $match['value'], $var);
+
+                 /** @var \Drupal\Core\Entity\ContentEntityInterface $entity */
+-                $entity = $entity_type->load($var[1]);
++                $entity = $this->loadEntity($content_entity_type->id(), $var[1]);
+                 if ($entity && $entity->access('view', \Drupal::currentUser()) && $entity->hasLinkTemplate('canonical')) {
+                   if (!isset($grouped_data[$content_entity_type->id()])) {
+                     $grouped_data[$content_entity_type->id()] = [];
+                   }
+                   $grouped_data[$content_entity_type->id()][] = [
+                     'name' => $match['label'],
+-                    'id' => $content_entity_type->id() . '::' . $entity->id(),
++                    'id' => $content_entity_type->id() . '::' . $entity->uuid(),
+                     'group' => $content_entity_type->getLabel(),
+                   ];
+                 }
+@@ -508,7 +503,7 @@ class CohesionDrupalEndpointController extends ControllerBase {
+
+                   $grouped_data['views'][] = [
+                     'name' => "{$view->label()} - {$this->t($display->display['display_title'])}  (/{$display->getPath()})",
+-                    'id' => 'view::' . $view->id() . '::' . $display_id,
++                    'id' => 'view::' . $view->uuid() . '::' . $display_id,
+                     'group' => 'Views',
+                   ];
+                 }
+@@ -840,4 +835,42 @@ class CohesionDrupalEndpointController extends ControllerBase {
+     ]);
+   }
+
++  /**
++   * Load an Entity by either UUID or Node ID
++   */
++  private function loadEntity($entityTypeId, $id) {
++    $entityStorage = $this->entityTypeManager->getStorage($entityTypeId);
++
++    if (!isset($entityStorage)) {
++      // Unable to find a storage provider for the given entity type
++      return;
++    }
++
++    if (is_numeric($id)) {
++      // The entity ID is a Node ID, so we can do a standard lookup
++      $entity = $entityStorage->load($id);
++    } else {
++      // The ID is likely a UUID, so we will attempt to lookup using the entity repository
++      $entityRepository = \Drupal::service('entity.repository');
++      $entity = $entityRepository->loadEntityByUuid($entityTypeId, $id);
++    }
++
++    if (!isset($entity)) {
++      // Unable to find an entity with the given ID
++      return;
++    }
++
++    return $entity;
++  }
++
++  /**
++   * Check is a value is a valid UUID
++   */
++  private function isUuid($uuid) {
++    if (!is_string($uuid) || (preg_match('/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/', $uuid) !== 1)) {
++      return false;
++    }
++    return true;
++  }
++
+ }
+diff --git a/src/Services/CohesionUtils.php b/src/Services/CohesionUtils.php
+index a9acf68..270ad09 100644
+--- a/src/Services/CohesionUtils.php
++++ b/src/Services/CohesionUtils.php
+@@ -387,10 +387,10 @@ class CohesionUtils {
+       switch ($entity_data[0]) {
+         case 'view':
+           $view_type = $this->entityTypeManager->getStorage('view');
+-          if ($view_type && $entity_data[1] && $entity_data[2]) {
++          if ($entity_data[1] && $entity_data[2]) {
+             $view_id = $entity_data[1];
+             $display_id = $entity_data[2];
+-            if ($view = $view_type->load($view_id)) {
++            if ($view = $this->loadEntity('view', $view_id)) {
+               $executable = $view->getExecutable();
+               $executable->initDisplay();
+               foreach ($executable->displayHandlers as $view_display_id => $display) {
+@@ -422,15 +422,12 @@ class CohesionUtils {
+           if (isset($entity_data[1])) {
+             $entity_type_id = $entity_data[0];
+             $entity_id = $entity_data[1];
+-            if ($entity_type = \Drupal::service('entity_type.manager')
+-              ->getStorage($entity_type_id)) {
+-              if ($entity = $entity_type->load($entity_id)) {
+-                $language = $this->languageManager->getCurrentLanguage()->getId();
+-                if ($entity->hasTranslation($language)) {
+-                  $entity = $entity->getTranslation($language);
+-                }
+-                return $entity->toUrl()->toString();
++            if ($entity = $this->loadEntity($entity_type_id, $entity_id)) {
++              $language = \Drupal::languageManager()->getCurrentLanguage()->getId();
++              if($entity->hasTranslation($language)){
++                $entity = $entity->getTranslation($language);
+               }
++              return $entity->toUrl()->toString();
+             }
+
+           }
+@@ -509,4 +506,32 @@ class CohesionUtils {
+     return FALSE;
+   }
+
++  /**
++   * Load an Entity by either UUID or Node ID
++   */
++  private function loadEntity($entityTypeId, $id) {
++    $entityStorage = $this->entityTypeManager->getStorage($entityTypeId);
++
++    if (!isset($entityStorage)) {
++      // Unable to find a storage provider for the given entity type
++      return;
++    }
++
++    if (is_numeric($id)) {
++      // The entity ID is a Node ID, so we can do a standard lookup
++      $entity = $entityStorage->load($id);
++    } else {
++      // The ID is likely a UUID, so we will attempt to lookup using the entity repository
++      $entityRepository = \Drupal::service('entity.repository');
++      $entity = $entityRepository->loadEntityByUuid($entityTypeId, $id);
++    }
++
++    if (!isset($entity)) {
++      // Unable to find an entity with the given ID
++      return;
++    }
++
++    return $entity;
++  }
++
+ }

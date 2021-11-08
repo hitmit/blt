@@ -1,0 +1,16 @@
+uuid: 5ab0899c-0d3b-4277-b6ea-f5668ed0b1af
+langcode: en
+status: false
+dependencies: {  }
+id: taxonomy_term_article_type_token
+label: 'Token (Taxonomy_term, Article Type)'
+last_entity_update: entityupdate_0031
+modified: false
+selectable: false
+custom: false
+twig_template: null
+default: false
+entity_type: taxonomy_term
+bundle: article_type
+view_mode: token
+master_template: ''

@@ -1,0 +1,4 @@
+administer melt_cms_article configuration:
+  title: 'Administer melt_cms_article configuration'
+  description: 'Optional description.'
+  restrict access: true

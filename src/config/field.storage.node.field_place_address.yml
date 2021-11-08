@@ -1,0 +1,29 @@
+uuid: 7b673706-9f14-4328-a7d2-30be5154e4cd
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - acquia_cms_place
+  module:
+    - acquia_cms_common
+    - address
+    - node
+third_party_settings:
+  acquia_cms_common:
+    search_index: content
+    search_label: 'Place Address'
+_core:
+  default_config_hash: pX0PeW_KEoEdZIXgdyWXzEialvSjL5BGeIemkiOUYdE
+id: node.field_place_address
+field_name: field_place_address
+entity_type: node
+type: address
+settings: {  }
+module: address
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

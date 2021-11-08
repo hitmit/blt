@@ -1,0 +1,40 @@
+{#
+/**
+ * @file
+ * AddToAny DX8 element template.
+ */
+#}
+{% spaceless %}
+
+  {% if elementSettings.universal == 1 and elementSettings.universal_placement != 'none' %}
+    {% set universal_button %}
+      <a class="a2a_dd addtoany_share"
+         href="https://www.addtoany.com/share#url={{ url('<current>')|url_encode }}&amp;title={{ linkTitle|url_encode }}">
+      </a>
+    {% endset %}
+  {% endif %}
+
+  <div{% if elementClasses != '' %} class="{{ elementClasses }}"{% endif %}{% if elementAttributes != '' %} {{ elementAttributes|raw }}{% endif %}>
+    <span class="a2a_kit a2a_kit_size_{{ elementSettings.icon_size }} addtoany_list" data-a2a-url="{{ link_url }}"
+          data-a2a-title="{{ link_title }}" data-a2a-icon-color="{{ elementSettings.icon_background }},{{ elementSettings.icon_color }}">
+
+      {% if elementSettings.universal == 1 and elementSettings.universal_placement == 'before' %}
+        {{ universal_button }}
+      {% endif %}
+
+      {% if elementSettings.facebook == 1 %}<a class="a2a_button_facebook"></a>{% endif %}
+      {% if elementSettings.twitter == 1 %}<a class="a2a_button_twitter"></a>{% endif %}
+      {% if elementSettings.google_plus == 1 %}<a class="a2a_button_google_plus"></a>{% endif %}
+      {% if elementSettings.linkedin == 1 %}<a class="a2a_button_linkedin"></a>{% endif %}
+      {% if elementSettings.pinterest == 1 %}<a class="a2a_button_pinterest"></a>{% endif %}
+      {% if elementSettings.whatsapp == 1 %}<a class="a2a_button_whatsapp"></a>{% endif %}
+      {% if elementSettings.email == 1 %}<a class="a2a_button_email"></a>{% endif %}
+
+      {% if elementSettings.universal == 1 and elementSettings.universal_placement == 'after' %}
+        {{ universal_button }}
+      {% endif %}
+    </span>
+  </div>
+
+
+{% endspaceless %}

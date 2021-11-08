@@ -1,0 +1,39 @@
+alb_auth.admin_settings:
+  path: '/admin/config/people/alb_auth'
+  defaults:
+    _form: '\Drupal\alb_auth\Form\ConfigurationForm'
+    _title: 'ALB authentication'
+  requirements:
+    _permission: 'administer site configuration'
+
+entity.claim_mapping.collection:
+  path: '/admin/config/people/alb_auth/mapping'
+  defaults:
+    _entity_list: 'claim_mapping'
+    _title: 'Claim mappings'
+  requirements:
+    _permission: 'administer site configuration'
+
+entity.claim_mapping.add_form:
+  path: '/admin/config/people/alb_auth/mapping/add'
+  defaults:
+    _entity_form: 'claim_mapping.add'
+    _title: 'Add claim mapping'
+  requirements:
+    _permission: 'administer site configuration'
+
+entity.claim_mapping.edit_form:
+  path: '/admin/config/people/alb_auth/mapping/{claim_mapping}'
+  defaults:
+    _entity_form: 'claim_mapping.edit'
+    _title: 'Edit claim mapping'
+  requirements:
+    _permission: 'administer site configuration'
+
+entity.claim_mapping.delete_form:
+  path: '/admin/config/people/alb_auth/mapping/{claim_mapping}/delete'
+  defaults:
+    _entity_form: 'claim_mapping.delete'
+    _title: 'Delete claim mapping'
+  requirements:
+    _permission: 'administer site configuration'

@@ -1,0 +1,51 @@
+uuid: dffe261c-df05-4aef-b28c-99c2f69a213a
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.search_index
+    - field.field.node.page.body
+    - field.field.node.page.field_categories
+    - field.field.node.page.field_layout_canvas
+    - field.field.node.page.field_page_image
+    - field.field.node.page.field_seo_description
+    - field.field.node.page.field_seo_image
+    - field.field.node.page.field_seo_keywords
+    - field.field.node.page.field_seo_title
+    - field.field.node.page.field_tags
+    - node.type.page
+  enforced:
+    module:
+      - acquia_cms_page
+  module:
+    - user
+_core:
+  default_config_hash: wrT9cQYcMO5CbMfvaJdi19ryYSfDHJKM3cTITE1j140
+id: node.page.search_index
+targetEntityType: node
+bundle: page
+mode: search_index
+content:
+  content_moderation_control:
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  links:
+    weight: 1
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  addtoany: true
+  body: true
+  field_categories: true
+  field_layout_canvas: true
+  field_page_image: true
+  field_seo_description: true
+  field_seo_image: true
+  field_seo_keywords: true
+  field_seo_title: true
+  field_tags: true
+  langcode: true
+  search_api_excerpt: true

@@ -1,0 +1,16 @@
+uuid: 2b37733e-2a54-46bb-93fe-39617fc07b62
+langcode: en
+status: false
+dependencies: {  }
+id: media_remote_video_thumbnail
+label: 'Thumbnail (Media, Remote video)'
+last_entity_update: entityupdate_0031
+modified: false
+selectable: false
+custom: false
+twig_template: null
+default: false
+entity_type: media
+bundle: remote_video
+view_mode: thumbnail
+master_template: ''

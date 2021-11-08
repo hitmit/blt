@@ -1,0 +1,16 @@
+uuid: 6d50b4cd-612d-4de9-80e8-e0de50817e00
+langcode: en
+status: false
+dependencies: {  }
+id: media_document_card
+label: 'Card (Media, Document)'
+last_entity_update: entityupdate_0031
+modified: false
+selectable: false
+custom: false
+twig_template: null
+default: false
+entity_type: media
+bundle: document
+view_mode: card
+master_template: ''

@@ -1,0 +1,9 @@
+name: melt CMS Page
+type: module
+description: Settings for the Basic page content type
+package: meltmedia
+core: 8.x
+core_version_requirement: ^8 || ^9
+dependencies:
+  - drupal:acquia_cms_page
+  - drupal:config_rewrite

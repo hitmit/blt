@@ -1,0 +1,16 @@
+uuid: 9f1d6f69-5f3d-49fe-9d2b-2293bdbcc632
+langcode: en
+status: false
+dependencies: {  }
+id: user_user_compact
+label: 'Compact (User, User)'
+last_entity_update: entityupdate_0031
+modified: false
+selectable: false
+custom: false
+twig_template: null
+default: false
+entity_type: user
+bundle: user
+view_mode: compact
+master_template: ''

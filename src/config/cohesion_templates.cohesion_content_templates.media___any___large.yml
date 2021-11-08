@@ -1,0 +1,16 @@
+uuid: 74b68469-1a6d-4366-936b-7ccef77bd2af
+langcode: en
+status: false
+dependencies: {  }
+id: media___any___large
+label: 'Large (Media)'
+last_entity_update: entityupdate_0031
+modified: false
+selectable: false
+custom: false
+twig_template: null
+default: false
+entity_type: media
+bundle: __any__
+view_mode: large
+master_template: ''

@@ -1,0 +1,27 @@
+From 3544b08654a33d93f605ba185c51c413b37093af Mon Sep 17 00:00:00 2001
+From: Jeremy Peter <jeremy.peter@meltmedia.com>
+Date: Fri, 27 Aug 2021 12:01:31 -0700
+Subject: [PATCH] feat: dispatch FILE_SAVED after copying assets to html
+ directory
+
+A use case would be to allow developers to transform the contents
+after being saved the the static directory.
+---
+ modules/tome_static/src/StaticGenerator.php | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/modules/tome_static/src/StaticGenerator.php b/modules/tome_static/src/StaticGenerator.php
+index fbed603..9f78411 100644
+--- a/modules/tome_static/src/StaticGenerator.php
++++ b/modules/tome_static/src/StaticGenerator.php
+@@ -221,6 +221,7 @@ class StaticGenerator implements StaticGeneratorInterface {
+ 
+       $sanitized_path = $this->sanitizePath($path);
+       if ($this->copyPath($sanitized_path, $destination)) {
++        $this->eventDispatcher->dispatch(TomeStaticEvents::FILE_SAVED, new FileSavedEvent($sanitized_path));
+         if (pathinfo($destination, PATHINFO_EXTENSION) === 'css') {
+           $css_assets = $this->getCssAssets(file_get_contents($destination), $sanitized_path);
+           $invoke_paths = array_merge($invoke_paths, $this->exportPaths($css_assets));
+-- 
+GitLab
+

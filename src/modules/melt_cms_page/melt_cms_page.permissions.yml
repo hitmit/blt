@@ -1,0 +1,4 @@
+administer melt_cms_page configuration:
+  title: 'Administer melt_cms_page configuration'
+  description: 'Optional description.'
+  restrict access: true

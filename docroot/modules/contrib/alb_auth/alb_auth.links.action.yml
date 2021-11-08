@@ -1,0 +1,5 @@
+entity.claim_mapping.add_form:
+  route_name: 'entity.claim_mapping.add_form'
+  title: 'Add claim mapping'
+  appears_on:
+    - entity.claim_mapping.collection

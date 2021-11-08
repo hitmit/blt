@@ -1,0 +1,6 @@
+services:
+  media_entity_download_inline.event_subscriber:
+    class: Drupal\media_entity_download_inline\EventSubscriber\MediaEntityDownloadInlineSubscriber
+    arguments: []
+    tags:
+      - { name: event_subscriber }

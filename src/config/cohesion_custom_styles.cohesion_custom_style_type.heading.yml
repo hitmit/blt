@@ -1,0 +1,7 @@
+uuid: b6611e5a-9d1d-46c0-a530-faecc6dfe070
+langcode: en
+status: true
+dependencies: {  }
+id: heading
+label: Heading
+element: 'h1,h2,h3,h4,h5,h6'

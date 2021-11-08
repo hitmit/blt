@@ -1,0 +1,16 @@
+uuid: 40c8cad3-25b8-4045-834d-d6a3687292b1
+langcode: en
+status: false
+dependencies: {  }
+id: node___any___search_result
+label: 'Search result highlighting input (Node)'
+last_entity_update: entityupdate_0031
+modified: false
+selectable: false
+custom: false
+twig_template: null
+default: false
+entity_type: node
+bundle: __any__
+view_mode: search_result
+master_template: ''

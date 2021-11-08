@@ -1,0 +1,16 @@
+uuid: bc8ef3fc-3d89-46ce-b16a-a54527718532
+langcode: en
+status: false
+dependencies: {  }
+id: taxonomy_term_person_type_token
+label: 'Token (Taxonomy_term, Person Type)'
+last_entity_update: entityupdate_0031
+modified: false
+selectable: false
+custom: false
+twig_template: null
+default: false
+entity_type: taxonomy_term
+bundle: person_type
+view_mode: token
+master_template: ''

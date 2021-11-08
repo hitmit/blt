@@ -1,0 +1,50 @@
+{
+    "uuid": [
+        {
+            "value": "84c68924-9090-417a-bfb4-ef07da348f8f"
+        }
+    ],
+    "langcode": [
+        {
+            "value": "en"
+        }
+    ],
+    "uid": [],
+    "filename": [
+        {
+            "value": "no-thumbnail.png"
+        }
+    ],
+    "uri": [
+        {
+            "value": "public:\/\/media-icons\/generic\/no-thumbnail.png"
+        }
+    ],
+    "filemime": [
+        {
+            "value": "image\/png"
+        }
+    ],
+    "filesize": [
+        {
+            "value": 7318
+        }
+    ],
+    "status": [
+        {
+            "value": true
+        }
+    ],
+    "created": [
+        {
+            "value": "2021-10-19T17:06:18+00:00",
+            "format": "Y-m-d\\TH:i:sP"
+        }
+    ],
+    "changed": [
+        {
+            "value": "2021-10-19T17:06:18+00:00",
+            "format": "Y-m-d\\TH:i:sP"
+        }
+    ]
+}

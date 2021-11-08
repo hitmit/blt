@@ -1,0 +1,7 @@
+uuid: 09e001c2-7533-49e6-af4d-010c66ef85e0
+langcode: en
+status: true
+dependencies: {  }
+id: blockquote
+label: 'Block quote'
+element: blockquote

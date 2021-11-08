@@ -1,0 +1,42 @@
+alb_auth.settings:
+  type: config_object
+  label: ALB Authentication
+  mapping:
+    enabled:
+      type: boolean
+      label: ALB authentication enabled
+    provision:
+      type: boolean
+      label: Automatic user provisioning enabled
+    aws_region:
+      type: text
+      label: AWS region
+    cookie_name:
+      type: text
+      label: ALB authentication cookie name
+    cognito:
+      type: mapping
+      label: 'Cognito'
+      mapping:
+        base_url:
+          type: uri
+          label: 'Cognito URL'
+        client_id:
+          type: text
+          label: Cognito client application ID
+alb_auth.claim_mapping.*:
+  type: config_entity
+  label: 'Claim mapping'
+  mapping:
+    id:
+      type: string
+      label: 'ID'
+    label:
+      type: label
+      label: 'Label'
+    claimSource:
+      type: string
+      label: 'Claim source'
+    mappingTarget:
+      type: string
+      label: 'Mapping target'

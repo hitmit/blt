@@ -1,0 +1,1431 @@
+From 1a00eb1f8174b80bce4b5db05d6acc001db7d4ee Mon Sep 17 00:00:00 2001
+From: Mike Moulton <mike@meltmedia.com>
+Date: Wed, 13 Nov 2019 02:05:42 -0700
+Subject: [PATCH] Making file sync support multiple scheme's
+
+Improved support for importing/exporting files from different schemes
+
+Seperating out config import into it's own command
+
+Seperating out config import into it's own command
+
+Seperating out config import into it's own command
+
+Seperating out config import into it's own command
+
+Adding support for menu_link_content entities to maintain their parent/child relationships
+
+Adding a normalizer for Cohesion layouts
+
+Removing test command
+
+Adding normalizer for menu items to ensure UUIDs are used when serializing
+
+Adding normalizer for menu items to ensure UUIDs are used when serializing
+
+Ensuring menu links dependencies are created first
+
+Moving cohesion layout to it's own module; Adding support for new path_alias module
+
+Ignoring entities we can't find
+
+Adding fix for Drush 10.1.1 and Drupal 8.8
+
+Adding support for config transform on save
+
+Adding config transformers to normalize front/error page paths
+
+Disabling config transform of system.site for now
+
+Adding debug logging
+
+Logging cleanup
+
+Adding lock to config save event
+
+Fixing issue with leading slash being removed when not transformed
+
+Replacing all uses of file_unmanaged_* as they are now depricated
+
+Moving file_prepare_directory to new service as they are deprecated
+
+More filesystem cleanup of constants
+
+Fix issue with directory creation
+
+Adding PathAlias dependencies on linked nodes
+
+Removing path_alias from content export as they are auto generated from the node
+
+Fix for menu link relationship cycle created when adding a menu link from the node edit page
+
+USE public method rather than private property to access `entityTypeId`
+
+Trying to access a protected propert was returning `null`.
+
+Ensuring static site generation only copies files and not entire directories
+
+Prevent Acquia Cohesion from regenerating UUIDs on content import
+
+Ensuring index is always sorted to enable better file merging
+
+Updating content metadata index sort to use key as sort value
+
+fix(static generator): add poster and data-src attributes to possible html asset attributes
+
+fix: remove duplicate references, fix deprecated code and cleanup syntax
+
+fix: Drupal 9 deprecation fixes
+
+- Also removed the `temporary` folder from the blacklist in the FileSync.php
+ file since Cohesion uses that
+---
+ composer.json                                      |   4 +
+ .../tome_static/src/Event/CollectPathsEvent.php    |   2 +-
+ modules/tome_static/src/Event/FileSavedEvent.php   |   3 +-
+ .../src/Event/ModifyDestinationEvent.php           |   2 +-
+ modules/tome_static/src/Event/ModifyHtmlEvent.php  |   2 +-
+ .../tome_static/src/Event/PathPlaceholderEvent.php |   2 +-
+ .../StaticPreviewRequestSubscriber.php             |   6 +-
+ modules/tome_static/src/StaticGenerator.php        |   5 +-
+ modules/tome_sync/src/Commands/ExportCommand.php   |   2 +-
+ modules/tome_sync/src/Commands/ImportCommand.php   |  15 ++-
+ .../src/Commands/ImportCompleteCommand.php         |   2 +-
+ .../tome_sync/src/Commands/ImportConfigCommand.php |  94 ++++++++++++++++++
+ .../tome_sync/src/Commands/ImportFilesCommand.php  |  32 ++++++
+ modules/tome_sync/src/ContentIndexerTrait.php      |  62 ++++++++++--
+ modules/tome_sync/src/Event/ContentCrudEvent.php   |   2 +-
+ .../src/EventSubscriber/BookEventSubscriber.php    |   2 +-
+ .../src/EventSubscriber/ConfigEventSubscriber.php  |  71 +++++++++++++-
+ .../src/EventSubscriber/ConfigTransformer.php      |  92 ++++++++++++++++++
+ .../ImportCompleteEventSubscriber.php              |  93 ++++++++++++++++++
+ modules/tome_sync/src/Exporter.php                 |   1 +
+ modules/tome_sync/src/FileSync.php                 | 108 +++++++++++++++------
+ modules/tome_sync/src/Importer.php                 |  20 ++++
+ .../Normalizer/MenuLinkContentEntityNormalizer.php |  73 ++++++++++++++
+ .../src/Normalizer/PathAliasEntityNormalizer.php   |  55 +++++++++++
+ modules/tome_sync/src/TomeSyncHelper.php           |  78 +++++++++++++++
+ modules/tome_sync/tome_sync.services.yml           |  39 +++++++-
+ 26 files changed, 807 insertions(+), 60 deletions(-)
+ create mode 100644 composer.json
+ create mode 100644 modules/tome_sync/src/Commands/ImportConfigCommand.php
+ create mode 100644 modules/tome_sync/src/Commands/ImportFilesCommand.php
+ create mode 100644 modules/tome_sync/src/EventSubscriber/ConfigTransformer.php
+ create mode 100644 modules/tome_sync/src/EventSubscriber/ImportCompleteEventSubscriber.php
+ create mode 100644 modules/tome_sync/src/Normalizer/MenuLinkContentEntityNormalizer.php
+ create mode 100644 modules/tome_sync/src/Normalizer/PathAliasEntityNormalizer.php
+
+diff --git a/composer.json b/composer.json
+new file mode 100644
+index 0000000..80e777d
+--- /dev/null
++++ b/composer.json
+@@ -0,0 +1,4 @@
++{
++  "name": "drupal/tome",
++  "type": "drupal-module"
++}
+diff --git a/modules/tome_static/src/Event/CollectPathsEvent.php b/modules/tome_static/src/Event/CollectPathsEvent.php
+index 661107d..0843474 100644
+--- a/modules/tome_static/src/Event/CollectPathsEvent.php
++++ b/modules/tome_static/src/Event/CollectPathsEvent.php
+@@ -2,7 +2,7 @@
+ 
+ namespace Drupal\tome_static\Event;
+ 
+-use Symfony\Component\EventDispatcher\Event;
++use Symfony\Contracts\EventDispatcher\Event;
+ 
+ /**
+  * Wraps an array of paths that will be processed by the static generator.
+diff --git a/modules/tome_static/src/Event/FileSavedEvent.php b/modules/tome_static/src/Event/FileSavedEvent.php
+index 1725553..b5664d1 100644
+--- a/modules/tome_static/src/Event/FileSavedEvent.php
++++ b/modules/tome_static/src/Event/FileSavedEvent.php
+@@ -2,8 +2,7 @@
+ 
+ namespace Drupal\tome_static\Event;
+ 
+-use Symfony\Component\EventDispatcher\Event;
+-
++use Symfony\Contracts\EventDispatcher\Event;
+ /**
+  * Allows modules to react to a file save.
+  */
+diff --git a/modules/tome_static/src/Event/ModifyDestinationEvent.php b/modules/tome_static/src/Event/ModifyDestinationEvent.php
+index fe6a88d..d5d5abe 100644
+--- a/modules/tome_static/src/Event/ModifyDestinationEvent.php
++++ b/modules/tome_static/src/Event/ModifyDestinationEvent.php
+@@ -2,7 +2,7 @@
+ 
+ namespace Drupal\tome_static\Event;
+ 
+-use Symfony\Component\EventDispatcher\Event;
++use Symfony\Contracts\EventDispatcher\Event;
+ 
+ /**
+  * Allows modules to modify the HTML of a static page before save.
+diff --git a/modules/tome_static/src/Event/ModifyHtmlEvent.php b/modules/tome_static/src/Event/ModifyHtmlEvent.php
+index f9db9b7..f319651 100644
+--- a/modules/tome_static/src/Event/ModifyHtmlEvent.php
++++ b/modules/tome_static/src/Event/ModifyHtmlEvent.php
+@@ -2,7 +2,7 @@
+ 
+ namespace Drupal\tome_static\Event;
+ 
+-use Symfony\Component\EventDispatcher\Event;
++use Symfony\Contracts\EventDispatcher\Event;
+ 
+ /**
+  * Allows modules to modify the HTML of a static page before save.
+diff --git a/modules/tome_static/src/Event/PathPlaceholderEvent.php b/modules/tome_static/src/Event/PathPlaceholderEvent.php
+index 32768f1..1ebac98 100644
+--- a/modules/tome_static/src/Event/PathPlaceholderEvent.php
++++ b/modules/tome_static/src/Event/PathPlaceholderEvent.php
+@@ -2,7 +2,7 @@
+ 
+ namespace Drupal\tome_static\Event;
+ 
+-use Symfony\Component\EventDispatcher\Event;
++use Symfony\Contracts\EventDispatcher\Event;
+ 
+ /**
+  * Allows modules that provide placeholder paths to load the real path.
+diff --git a/modules/tome_static/src/EventSubscriber/StaticPreviewRequestSubscriber.php b/modules/tome_static/src/EventSubscriber/StaticPreviewRequestSubscriber.php
+index f3a688f..874a431 100644
+--- a/modules/tome_static/src/EventSubscriber/StaticPreviewRequestSubscriber.php
++++ b/modules/tome_static/src/EventSubscriber/StaticPreviewRequestSubscriber.php
+@@ -11,7 +11,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+ use Symfony\Component\HttpFoundation\File\File;
+ use Symfony\Component\HttpFoundation\Response;
+ use Symfony\Component\HttpFoundation\Session\Session;
+-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
++use Symfony\Component\HttpKernel\Event\RequestEvent;
+ use Symfony\Component\HttpKernel\KernelEvents;
+ 
+ /**
+@@ -69,10 +69,10 @@ class StaticPreviewRequestSubscriber implements EventSubscriberInterface {
+   /**
+    * Sets a response in case of a Dynamic Page Cache hit.
+    *
+-   * @param \Symfony\Component\HttpKernel\Event\GetResponseEvent $event
++   * @param \Symfony\Component\HttpKernel\Event\RequestEvent $event
+    *   The event to process.
+    */
+-  public function onRequest(GetResponseEvent $event) {
++  public function onRequest(RequestEvent $event) {
+     $request = $event->getRequest();
+     if (!$this->session->get(static::SESSION_KEY) || $this->routeMatch->getRouteName() === 'tome_static.preview_exit') {
+       return;
+diff --git a/modules/tome_static/src/StaticGenerator.php b/modules/tome_static/src/StaticGenerator.php
+index fbed603..09799ca 100644
+--- a/modules/tome_static/src/StaticGenerator.php
++++ b/modules/tome_static/src/StaticGenerator.php
+@@ -389,6 +389,9 @@ class StaticGenerator implements StaticGeneratorInterface {
+     $xpath = new \DOMXPath($document);
+     /** @var \DOMElement $image */
+     foreach ($xpath->query('//img | //source | //video') as $image) {
++      if ($image->hasAttribute('data-src')) {
++        $paths[] = $image->getAttribute('data-src');
++      }
+       if ($image->hasAttribute('src')) {
+         $paths[] = $image->getAttribute('src');
+       }
+@@ -526,7 +529,7 @@ class StaticGenerator implements StaticGeneratorInterface {
+       $pattern = '|^' . preg_quote($base_path, '|') . '|';
+       $path = preg_replace($pattern, '', $path);
+     }
+-    if (file_exists($path)) {
++    if (is_file($path)) {
+       $directory = dirname($destination);
+       $this->fileSystem->prepareDirectory($directory, FileSystemInterface::CREATE_DIRECTORY);
+       try {
+diff --git a/modules/tome_sync/src/Commands/ExportCommand.php b/modules/tome_sync/src/Commands/ExportCommand.php
+index d003fa5..ce2e7bb 100644
+--- a/modules/tome_sync/src/Commands/ExportCommand.php
++++ b/modules/tome_sync/src/Commands/ExportCommand.php
+@@ -9,7 +9,7 @@ use Drupal\tome_sync\ExporterInterface;
+ use Symfony\Component\Console\Input\InputInterface;
+ use Symfony\Component\Console\Input\InputOption;
+ use Symfony\Component\Console\Output\OutputInterface;
+-use Symfony\Component\EventDispatcher\Event;
++use Symfony\Contracts\EventDispatcher\Event;
+ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+ 
+ /**
+diff --git a/modules/tome_sync/src/Commands/ImportCommand.php b/modules/tome_sync/src/Commands/ImportCommand.php
+index bfb97a4..9ef7166 100644
+--- a/modules/tome_sync/src/Commands/ImportCommand.php
++++ b/modules/tome_sync/src/Commands/ImportCommand.php
+@@ -110,17 +110,26 @@ class ImportCommand extends CommandBase {
+       return 1;
+     }
+ 
+-    $this->prepareConfigForImport();
+-    if (!$this->runCommand($this->executable . " config:import -y", NULL, NULL)) {
++    // Drush 10.1.1 has issues with Drupal 8.8's config changes and finding the sync dir
++    // Adding this helps
++    if (!$this->runCommand($this->executable . " cache:rebuild -y", NULL, NULL)) {
+       return 1;
+     }
+ 
++    $this->prepareConfigForImport();
++    if (!$this->runCommand($this->executable . " config:import sync -y", NULL, NULL)) {
++      # Ignore errors from here
++      // return 1;
++    }
++
+     $chunked_names = $this->importer->getChunkedNames();
+     if (!$this->importChunks($chunked_names, $options['entity-count'], $options['process-count'])) {
+       return 1;
+     }
+ 
+-    $this->importer->importFiles();
++    if (!$this->runCommand($this->executable . " tome:import-files", NULL, NULL)) {
++      return 1;
++    }
+ 
+     if (!$this->runCommand($this->executable . " cache:rebuild -y", NULL, NULL)) {
+       return 1;
+diff --git a/modules/tome_sync/src/Commands/ImportCompleteCommand.php b/modules/tome_sync/src/Commands/ImportCompleteCommand.php
+index 2a8547d..26f1f82 100644
+--- a/modules/tome_sync/src/Commands/ImportCompleteCommand.php
++++ b/modules/tome_sync/src/Commands/ImportCompleteCommand.php
+@@ -6,7 +6,7 @@ use Drupal\tome_base\CommandBase;
+ use Drupal\tome_sync\Event\TomeSyncEvents;
+ use Symfony\Component\Console\Input\InputInterface;
+ use Symfony\Component\Console\Output\OutputInterface;
+-use Symfony\Component\EventDispatcher\Event;
++use Symfony\Contracts\EventDispatcher\Event;
+ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+ 
+ /**
+diff --git a/modules/tome_sync/src/Commands/ImportConfigCommand.php b/modules/tome_sync/src/Commands/ImportConfigCommand.php
+new file mode 100644
+index 0000000..1cc8739
+--- /dev/null
++++ b/modules/tome_sync/src/Commands/ImportConfigCommand.php
+@@ -0,0 +1,94 @@
++<?php
++
++namespace Drupal\tome_sync\Commands;
++
++use Drupal\Core\Entity\ContentEntityTypeInterface;
++use Drupal\Core\Entity\EntityTypeManagerInterface;
++use Drupal\Core\State\StateInterface;
++use Drupal\tome_base\CommandBase;
++use Drupal\tome_sync\ImporterInterface;
++use Symfony\Component\Console\Input\InputInterface;
++use Symfony\Component\Console\Input\InputOption;
++use Symfony\Component\Console\Output\OutputInterface;
++
++/**
++ * Contains the tome:import-config command.
++ *
++ * @internal
++ */
++class ImportConfigCommand extends CommandBase {
++
++  /**
++   * The importer.
++   *
++   * @var \Drupal\tome_sync\ImporterInterface
++   */
++  protected $importer;
++
++  /**
++   * The entity type manager.
++   *
++   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
++   */
++  protected $entityTypeManager;
++
++  /**
++   * The state system.
++   *
++   * @var \Drupal\Core\State\StateInterface
++   */
++  protected $state;
++
++  /**
++   * Constructs an ImportCommand instance.
++   *
++   * @param \Drupal\tome_sync\ImporterInterface $importer
++   *   The importer.
++   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
++   *   The entity type manager.
++   * @param \Drupal\Core\State\StateInterface $state
++   *   The state system.
++   */
++  public function __construct(ImporterInterface $importer, EntityTypeManagerInterface $entity_type_manager, StateInterface $state) {
++    parent::__construct();
++    $this->importer = $importer;
++    $this->entityTypeManager = $entity_type_manager;
++    $this->state = $state;
++  }
++
++  /**
++   * {@inheritdoc}
++   */
++  protected  function configure() {
++    $this->setName('tome:import-config')
++      ->setDescription('Installs site and imports config.');
++  }
++
++  /**
++   * {@inheritdoc}
++   */
++  protected function execute(InputInterface $input, OutputInterface $output) {
++
++    $this->prepareConfigForImport();
++    if (!$this->runCommand($this->executable . " config:import -y", NULL, NULL)) {
++      # Ignore errors from here 
++      // return 1;
++    }
++
++  }
++
++  /**
++   * Prepares config for import by copying some directly from the source.
++   */
++  protected function prepareConfigForImport() {
++    /** @var \Drupal\Core\Config\StorageInterface $source_storage */
++    $source_storage = \Drupal::service('config.storage.sync');
++    if ($site_data = $source_storage->read('system.site')) {
++      \Drupal::configFactory()->getEditable('system.site')->setData($site_data)->save(TRUE);
++      if (!empty($site_data['default_langcode']) && $language_data = $source_storage->read('language.entity.' . $site_data['default_langcode'])) {
++        \Drupal::configFactory()->getEditable('language.entity.' . $site_data['default_langcode'])->setData($language_data)->save(TRUE);
++      }
++    }
++  }
++
++}
+diff --git a/modules/tome_sync/src/Commands/ImportFilesCommand.php b/modules/tome_sync/src/Commands/ImportFilesCommand.php
+new file mode 100644
+index 0000000..bc8de2d
+--- /dev/null
++++ b/modules/tome_sync/src/Commands/ImportFilesCommand.php
+@@ -0,0 +1,32 @@
++<?php
++
++namespace Drupal\tome_sync\Commands;
++
++use Drupal\tome_sync\TomeSyncHelper;
++use Symfony\Component\Console\Input\InputArgument;
++use Symfony\Component\Console\Input\InputInterface;
++use Symfony\Component\Console\Output\OutputInterface;
++
++/**
++ * Contains the tome:import-files command.
++ *
++ * @internal
++ */
++class ImportFilesCommand extends ImportCommand {
++
++  /**
++   * {@inheritdoc}
++   */
++  protected  function configure() {
++    $this->setName('tome:import-files')
++      ->setDescription('Imports files.');
++  }
++
++  /**
++   * {@inheritdoc}
++   */
++  protected function execute(InputInterface $input, OutputInterface $output) {
++    $this->importer->importFiles();
++  }
++
++}
+diff --git a/modules/tome_sync/src/ContentIndexerTrait.php b/modules/tome_sync/src/ContentIndexerTrait.php
+index 19e7b94..4faf3e3 100644
+--- a/modules/tome_sync/src/ContentIndexerTrait.php
++++ b/modules/tome_sync/src/ContentIndexerTrait.php
+@@ -6,8 +6,10 @@ use Drupal\Core\Entity\ContentEntityInterface;
+ use Drupal\Core\Field\EntityReferenceFieldItemListInterface;
+ use Drupal\Core\Field\FieldItemListInterface;
+ use Drupal\Core\Site\Settings;
+-use Drupal\Core\TypedData\Type\UriInterface;
+ use Drupal\Core\File\FileSystemInterface;
++use Drupal\menu_link_content\MenuLinkContentInterface;
++use Drupal\path_alias\PathAliasInterface;
++use Drupal\Core\TypedData\Type\UriInterface;
+ 
+ /**
+  * Provides methods for reading and writing the index file.
+@@ -25,12 +27,56 @@ trait ContentIndexerTrait {
+    *   An entity to be indexed.
+    */
+   protected function indexContent(ContentEntityInterface $entity) {
+-    // @todo Replace when trait becomes service in Tome 2.x.
+-    $entity_type_manager = \Drupal::entityTypeManager();
++    $entityTypeManager = \Drupal::service('entity_type.manager');
+     $dependencies = [];
++
++    # Handle dependencies of entities for type MenuLinkContent
++    # - who implement a parent child relationship but don't implement the EntityReferenceFieldItemListInterface
++    # - linked entities
++    if ($entity instanceof MenuLinkContentInterface) {
++
++      // Add a dependency to a menu items parent
++      $parentId = $entity->getParentId();
++      if ($parentId) {
++        list($menu_name, $parent) = explode(':', $parentId, 2);
++        $dependencies[] = "{$menu_name}.{$parent}";
++      }
++
++      // Add dependency to a menu items linked entity
++      $linkUrl = $entity->getUrlObject();
++      if ($linkUrl && $linkUrl->isRouted()) {
++        list($type, $subType, $ref) = explode('.', $linkUrl->getRouteName(), 3);
++        if ($type === 'entity') {
++          $routeParams = $linkUrl->getRouteParameters();
++          $entityId = $routeParams[$subType];
++          $linkedEntity = $entityTypeManager->getStorage($subType)->load($entityId);
++          $dependencies[] = "{$subType}.{$linkedEntity->uuid()}";
++        }
++      }
++    }
++
++    # Handle dependencies of entities for type PathAlias
++    if ($entity instanceof PathAliasInterface) {
++      $path = $entity->getPath();
++      if (isset($path) && preg_match('/^\/node\/[0-9]+$/', $path)) {
++        list($entityType, $nodeId) = explode('/', ltrim($path, '/'), 2);
++        $linkedEntity = $entityTypeManager->getStorage($entityType)->load($nodeId);
++        if (isset($linkedEntity)) {
++          $dependencies[] = "{$entityType}.{$linkedEntity->uuid()}";
++        }
++      }
++    }
++
+     foreach ($entity as $field) {
+       if ($field instanceof EntityReferenceFieldItemListInterface) {
+         foreach ($field->referencedEntities() as $referenced_entity) {
++          // There are times when a node has a reference to it's menu link, even though the owner of the
++          // relationship is the menu link. In this case we skip adding it as a dependency to prevent cycles
++          // in the relationship graph
++          if ($entity->getEntityTypeId() === 'node' && $referenced_entity instanceof MenuLinkContentInterface) {
++            continue;
++          }
++
+           if ($referenced_entity instanceof ContentEntityInterface) {
+             $dependencies[] = TomeSyncHelper::getContentName($referenced_entity);
+           }
+@@ -43,8 +89,8 @@ trait ContentIndexerTrait {
+             // @see \Drupal\tome_sync\Normalizer\UriNormalizer
+             if ($property instanceof UriInterface && strpos($property->getValue(), 'entity:') === 0) {
+               $parts = explode('/', str_replace('entity:', '', $property->getValue()));
+-              if (count($parts) >= 2 && $entity_type_manager->hasDefinition($parts[0]) && is_numeric($parts[1])) {
+-                if ($referenced_entity = $entity_type_manager->getStorage($parts[0])->load($parts[1])) {
++              if (count($parts) >= 2 && $entityTypeManager->hasDefinition($parts[0]) && is_numeric($parts[1])) {
++                if ($referenced_entity = $entityTypeManager->getStorage($parts[0])->load($parts[1])) {
+                   $dependencies[] = TomeSyncHelper::getContentNameFromParts($referenced_entity->getEntityTypeId(), $referenced_entity->uuid());
+                 }
+               }
+@@ -60,8 +106,8 @@ trait ContentIndexerTrait {
+       foreach (['path', 'alias'] as $key) {
+         if (!empty($entity->get($key)->value)) {
+           $parts = explode('/', $entity->get($key)->value);
+-          if (count($parts) >= 3 && $entity_type_manager->hasDefinition($parts[1]) && is_numeric($parts[2])) {
+-            if ($referenced_entity = $entity_type_manager->getStorage($parts[1])->load($parts[2])) {
++          if (count($parts) >= 3 && $entityTypeManager->hasDefinition($parts[1]) && is_numeric($parts[2])) {
++            if ($referenced_entity = $entityTypeManager->getStorage($parts[1])->load($parts[2])) {
+               $dependencies[] = TomeSyncHelper::getContentName($referenced_entity);
+             }
+           }
+@@ -80,6 +126,7 @@ trait ContentIndexerTrait {
+     $index[TomeSyncHelper::getContentName($entity)] = $dependencies;
+     ftruncate($handle, 0);
+     rewind($handle);
++    ksort($index);
+     fwrite($handle, json_encode($index, JSON_PRETTY_PRINT));
+ 
+     flock($handle, LOCK_UN);
+@@ -117,6 +164,7 @@ trait ContentIndexerTrait {
+     }
+     ftruncate($handle, 0);
+     rewind($handle);
++    ksort($index);
+     fwrite($handle, json_encode($index, JSON_PRETTY_PRINT));
+ 
+     flock($handle, LOCK_UN);
+diff --git a/modules/tome_sync/src/Event/ContentCrudEvent.php b/modules/tome_sync/src/Event/ContentCrudEvent.php
+index 73f50ed..b2db670 100644
+--- a/modules/tome_sync/src/Event/ContentCrudEvent.php
++++ b/modules/tome_sync/src/Event/ContentCrudEvent.php
+@@ -3,7 +3,7 @@
+ namespace Drupal\tome_sync\Event;
+ 
+ use Drupal\Core\Entity\ContentEntityInterface;
+-use Symfony\Component\EventDispatcher\Event;
++use Symfony\Contracts\EventDispatcher\Event;
+ 
+ /**
+  * Wraps a content event for listeners.
+diff --git a/modules/tome_sync/src/EventSubscriber/BookEventSubscriber.php b/modules/tome_sync/src/EventSubscriber/BookEventSubscriber.php
+index 6c61fc4..a3da175 100644
+--- a/modules/tome_sync/src/EventSubscriber/BookEventSubscriber.php
++++ b/modules/tome_sync/src/EventSubscriber/BookEventSubscriber.php
+@@ -5,9 +5,9 @@ namespace Drupal\tome_sync\EventSubscriber;
+ use Drupal\Core\Database\Connection;
+ use Drupal\Core\Entity\EntityTypeManagerInterface;
+ use Drupal\Core\Site\Settings;
++use Drupal\Core\File\FileSystemInterface;
+ use Drupal\tome_sync\Event\TomeSyncEvents;
+ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+-use Drupal\Core\File\FileSystemInterface;
+ 
+ /**
+  * Event subscriber that keep book outlines in sync with content changes.
+diff --git a/modules/tome_sync/src/EventSubscriber/ConfigEventSubscriber.php b/modules/tome_sync/src/EventSubscriber/ConfigEventSubscriber.php
+index 21295c5..adb149a 100644
+--- a/modules/tome_sync/src/EventSubscriber/ConfigEventSubscriber.php
++++ b/modules/tome_sync/src/EventSubscriber/ConfigEventSubscriber.php
+@@ -2,11 +2,17 @@
+ 
+ namespace Drupal\tome_sync\EventSubscriber;
+ 
++use Psr\Log\LoggerInterface;
+ use Drupal\Core\Config\ConfigCrudEvent;
+ use Drupal\Core\Config\ConfigEvents;
+ use Drupal\Core\Config\ConfigRenameEvent;
++use Drupal\Core\Config\MemoryStorage;
+ use Drupal\Core\Config\StorageInterface;
++use Drupal\Core\Config\StorageTransformEvent;
++use Drupal\Core\Config\StorageTransformerException;
++use Drupal\Core\Lock\LockBackendInterface;
+ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
++use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+ 
+ /**
+  * Keeps the config export directory synced with config CRUD operations.
+@@ -15,6 +21,25 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+  */
+ class ConfigEventSubscriber implements EventSubscriberInterface {
+ 
++  /**
++   * The name used to identify the lock.
++   */
++  const LOCK_NAME = 'config_event_export';
++
++  /**
++   * The module logger
++   *
++   * @var \Psr\Log\LoggerInterface
++   */
++  protected $logger;
++
++  /**
++   * The event dispatcher.
++   *
++   * @var \Symfony\Component\EventDispatcher\EventDispatcherInterface
++   */
++  protected $eventDispatcher;
++
+   /**
+    * The config storage.
+    *
+@@ -22,14 +47,28 @@ class ConfigEventSubscriber implements EventSubscriberInterface {
+    */
+   protected $configStorage;
+ 
++  /**
++   * The used lock backend instance.
++   *
++   * @var \Drupal\Core\Lock\LockBackendInterface
++   */
++  protected $lock;
++
+   /**
+    * Constructs the ConfigEventSubscriber object.
+    *
+    * @param \Drupal\Core\Config\StorageInterface $config_storage
+    *   The config storage.
++   * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $eventDispatcher
++   *   The event dispatcher
++   * @param \Psr\Log\LoggerInterface $logger
++   *   The logger
+    */
+-  public function __construct(StorageInterface $config_storage) {
++  public function __construct(StorageInterface $config_storage, EventDispatcherInterface $eventDispatcher, LoggerInterface $logger, LockBackendInterface $lock) {
+     $this->configStorage = $config_storage;
++    $this->eventDispatcher = $eventDispatcher;
++    $this->logger = $logger;
++    $this->lock = $lock;
+   }
+ 
+   /**
+@@ -41,7 +80,35 @@ class ConfigEventSubscriber implements EventSubscriberInterface {
+   public function configSave(ConfigCrudEvent $event) {
+     if (!\Drupal::isConfigSyncing() && !isset($GLOBALS['_tome_sync_installing'])) {
+       $config = $event->getConfig();
+-      $this->configStorage->write($config->getName(), $config->getRawData());
++      $configName = $config->getName();
++      $configValue = $config->getRawData();
++
++      // Acquire a lock for the request to assert that the storage does not change
++      // when a concurrent request transforms the storage.
++      if (!$this->lock->acquire(self::LOCK_NAME)) {
++        $this->lock->wait(self::LOCK_NAME);
++        if (!$this->lock->acquire(self::LOCK_NAME)) {
++          throw new StorageTransformerException("Cannot acquire config export transformer lock.");
++        }
++      }
++
++      $this->logger->debug('Saving config: ' . $configName);
++      // $this->logger->debug('  -- initial value: ' . json_encode($configValue));
++
++      // Add the updated config to a temporary storage so that we can have any config transformers manipulate it
++      $tempStorage = new MemoryStorage();
++      $tempStorage->write($configName, $configValue);
++
++      // Allow others to transform the config before we export it to disk
++      $this->eventDispatcher->dispatch(ConfigEvents::STORAGE_TRANSFORM_EXPORT, new StorageTransformEvent($tempStorage));
++
++      $transformedConfig = $tempStorage->read($configName);
++      // $this->logger->debug('  -- transformed value: ' . json_encode($transformedConfig));
++
++      // Write the transformed config out to disk
++      $this->configStorage->write($configName, $tempStorage->read($configName));
++
++      $this->lock->release(self::LOCK_NAME);
+     }
+   }
+ 
+diff --git a/modules/tome_sync/src/EventSubscriber/ConfigTransformer.php b/modules/tome_sync/src/EventSubscriber/ConfigTransformer.php
+new file mode 100644
+index 0000000..aa628ca
+--- /dev/null
++++ b/modules/tome_sync/src/EventSubscriber/ConfigTransformer.php
+@@ -0,0 +1,92 @@
++<?php
++
++namespace Drupal\tome_sync\EventSubscriber;
++
++use Psr\Log\LoggerInterface;
++use Drupal\Core\Config\ConfigEvents;
++use Drupal\Core\Config\StorageTransformEvent;
++use Symfony\Component\EventDispatcher\EventSubscriberInterface;
++use Drupal\tome_sync\TomeSyncHelper;
++
++class ConfigTransformer implements EventSubscriberInterface {
++
++  /**
++   * The module logger
++   *
++   * @var \Psr\Log\LoggerInterface
++   */
++  protected $logger;
++
++  /**
++   * Constructs the ConfigTransformer object.
++   *
++   * @param \Psr\Log\LoggerInterface $logger
++   *   The logger
++   */
++  public function __construct(LoggerInterface $logger) {
++    $this->logger = $logger;
++  }
++
++  /**
++   * {@inheritdoc}
++   */
++  public static function getSubscribedEvents() {
++    $events[ConfigEvents::STORAGE_TRANSFORM_IMPORT][] = ['onImportTransform'];
++    $events[ConfigEvents::STORAGE_TRANSFORM_EXPORT][] = ['onExportTransform'];
++    return $events;
++  }
++  /**
++   * The storage is transformed for importing.
++   *
++   * @param \Drupal\Core\Config\StorageTransformEvent $event
++   *   The config storage transform event.
++   */
++  public function onImportTransform(StorageTransformEvent $event) {
++    /** @var \Drupal\Core\Config\StorageInterface $storage */
++    $storage = $event->getStorage();
++
++    // Since it's unlikley that we can successfully lookup any referenced pages
++    // by their UUID yet as config is imported before content, we will remove
++    // the current paths. Once importing is complete, another event will fire
++    // that will set the denormalized paths then.
++    $siteConfig = $storage->read('system.site');
++    if ($siteConfig) {
++      $result = [];
++      foreach ($siteConfig['page'] as $type=>$path) {
++        $result[$type] = '';
++      }
++      $siteConfig['page'] = $result;
++      $storage->write('system.site', $siteConfig);
++    }
++  }
++
++  /**
++   * The storage is transformed for exporting.
++   *
++   * @param \Drupal\Core\Config\StorageTransformEvent $event
++   *   The config storage transform event.
++   */
++  public function onExportTransform(StorageTransformEvent $event) {
++    /** @var \Drupal\Core\Config\StorageInterface $storage */
++    $storage = $event->getStorage();
++
++    // Normalize site config
++    $siteConfig = $storage->read('system.site');
++    if (!isset($siteConfig)) {
++      return;
++    }
++
++    $systemPages = $siteConfig['page'];
++    if (isset($systemPages)) {
++      $result = [];
++      foreach ($systemPages as $type => $path) {
++        $result[$type] = TomeSyncHelper::normalizePathReference($path);
++      }
++
++      $this->logger->debug('Normalizing site paths from: ' . json_encode($systemPages) . ' to: ' . json_encode($result));
++
++      $siteConfig['page'] = $result;
++      $storage->write('system.site', $siteConfig);
++    }
++  }
++}
+diff --git a/modules/tome_sync/src/EventSubscriber/ImportCompleteEventSubscriber.php b/modules/tome_sync/src/EventSubscriber/ImportCompleteEventSubscriber.php
+new file mode 100644
+index 0000000..5db5c17
+--- /dev/null
++++ b/modules/tome_sync/src/EventSubscriber/ImportCompleteEventSubscriber.php
+@@ -0,0 +1,93 @@
++<?php
++
++namespace Drupal\tome_sync\EventSubscriber;
++
++use Psr\Log\LoggerInterface;
++use Symfony\Contracts\EventDispatcher\Event;
++use Symfony\Component\EventDispatcher\EventSubscriberInterface;
++use Drupal\Core\Config\StorageInterface;
++use Drupal\tome_sync\Event\TomeSyncEvents;
++use Drupal\tome_sync\TomeSyncHelper;
++
++class ImportCompleteEventSubscriber implements EventSubscriberInterface {
++
++  /**
++   * The module logger
++   *
++   * @var \Psr\Log\LoggerInterface
++   */
++  protected $logger;
++
++  /**
++   * The primary drupal config storage
++   *
++   * @var \Drupal\Core\Config\StorageInterface
++   */
++  protected $configStorage;
++
++  /**
++   * The exported drupal config storage
++   *
++   * @var \Drupal\Core\Config\StorageInterface
++   */
++  protected $exportedConfigStorage;
++
++  /**
++   * Creates a BookEventSubscriber object.
++   *
++   * @param \Drupal\Core\Config\StorageInterface $configStorage
++   *   The primary drupal config storage
++   * @param \Drupal\Core\Config\StorageInterface $exportedConfigStorage
++   *   The exported drupal config storage
++   * @param \Psr\Log\LoggerInterface $logger
++   *   The logger
++   */
++  public function __construct(StorageInterface $configStorage, StorageInterface $exportedConfigStorage, LoggerInterface $logger) {
++    $this->configStorage = $configStorage;
++    $this->exportedConfigStorage = $exportedConfigStorage;
++    $this->logger = $logger;
++  }
++
++  /**
++   * {@inheritdoc}
++   */
++  public static function getSubscribedEvents() {
++    $events[TomeSyncEvents::IMPORT_ALL][] = ['onImportComplete'];
++    return $events;
++  }
++
++  /**
++   * Fired once we have completed importing all config and content
++   *
++   * @param \Symfony\Component\EventDispatcher\Event $event
++   *   The event.
++   */
++  public function onImportComplete(Event $event) {
++    // After we have completed importing a sites config and content we need to set
++    // the default home and error pages. Since drupal wants these as node id's
++    // and we have exported them to disk using it's UUID, we need to denormalize
++    // the paths and write them to the current config
++    //
++    // We can only do this after we have completed importing to ensure the entity
++    // we need to lookup exists in the database
++    $siteConfig = $this->exportedConfigStorage->read('system.site');
++    if (!isset($siteConfig)) {
++      return;
++    }
++
++    $result = [];
++
++    $systemPages = $siteConfig['page'];
++    if (isset($systemPages)) {
++      foreach ($systemPages as $type => $path) {
++        $result[$type] = TomeSyncHelper::denormalizePathReference($path);
++      }
++
++      $this->logger->debug('Denormalizing site paths from: ' . json_encode($systemPages) . ' to: ' . json_encode($result));
++
++      $siteConfig['page'] = $result;
++      $this->configStorage->write('system.site', $siteConfig);
++    }
++  }
++
++}
+diff --git a/modules/tome_sync/src/Exporter.php b/modules/tome_sync/src/Exporter.php
+index d46daa1..23efaf3 100644
+--- a/modules/tome_sync/src/Exporter.php
++++ b/modules/tome_sync/src/Exporter.php
+@@ -74,6 +74,7 @@ class Exporter implements ExporterInterface {
+    */
+   protected static $excludedTypes = [
+     'content_moderation_state',
++    'path_alias'
+   ];
+ 
+   /**
+diff --git a/modules/tome_sync/src/FileSync.php b/modules/tome_sync/src/FileSync.php
+index 3d47a7d..356f4d3 100644
+--- a/modules/tome_sync/src/FileSync.php
++++ b/modules/tome_sync/src/FileSync.php
+@@ -4,11 +4,14 @@ namespace Drupal\tome_sync;
+ 
+ use Drupal\Core\Site\Settings;
+ use Drupal\file\FileInterface;
++use Drupal\Core\File\FileSystem;
++use Drupal\Core\File\FileSystemInterface;
+ use Drupal\tome_base\PathTrait;
+ use Drupal\Core\Config\StorageException;
+-use Drupal\Core\File\FileSystemInterface;
+ use Drupal\Component\FileSecurity\FileSecurity;
++use Drupal\Core\StreamWrapper\StreamWrapperInterface;
+ use Drupal\Core\StreamWrapper\StreamWrapperManager;
++use Drupal\Core\StreamWrapper\StreamWrapperManagerInterface;
+ 
+ /**
+  * Handles file import and exports by keeping a file export directory in sync.
+@@ -26,30 +29,55 @@ class FileSync implements FileSyncInterface {
+    */
+   protected $fileSystem;
+ 
++  /**
++   * @var \Drupal\Core\StreamWrapper\StreamWrapperManagerInterface;
++   */
++  protected $streamWrapperManager;
++
++  /**
++   * Schemas to blacklist
++   *
++   */
++  protected $blacklistSchemes;
++
+   /**
+    * Creates an FileSync object.
+    *
+    * @param \Drupal\Core\File\FileSystemInterface $file_system
+    *   The file system.
+    */
+-  public function __construct(FileSystemInterface $file_system) {
++  public function __construct(FileSystemInterface $file_system, StreamWrapperManagerInterface $streamWrapperManager) {
+     $this->fileSystem = $file_system;
++    $this->blacklistSchemes = Settings::get('tome_scheme_blacklist', ['private']);
++    $this->streamWrapperManager = $streamWrapperManager;
+   }
+ 
+   /**
+    * {@inheritdoc}
+    */
+   public function importFiles() {
+-    $file_directory = $this->getFileDirectory();
+-    if (!is_dir($file_directory)) {
+-      return;
+-    }
++    $base_file_directory = $this->getFileDirectory();
+     /** @var \Drupal\file\FileInterface $file */
+-    foreach ($this->fileSystem->scanDirectory($file_directory, '/.*/') as $file) {
+-      $destination = 'public://' . ltrim(str_replace($file_directory, '', $file->uri), '/');
+-      $directory = dirname($destination);
+-      $this->fileSystem->prepareDirectory($directory, FileSystemInterface::CREATE_DIRECTORY);
+-      $this->fileSystem->copy($file->uri, $destination, FileSystemInterface::EXISTS_REPLACE);
++
++
++    foreach ($this->fileSystem->scanDirectory($base_file_directory, '/.*/', [ 'recurse' => FALSE ]) as $schemeDir) {
++      $scheme = $schemeDir->name;
++
++      if (!$this->streamWrapperManager->isValidScheme($scheme)) {
++        \Drupal::logger('tome_sync')->notice('Unsupported file scheme: ' . $scheme . ', skipping import of files');
++      } else {
++
++        if (!in_array($scheme, $this->blacklistSchemes)) {
++
++          $scheme_file_directory = $base_file_directory . '/' . $scheme;
++          foreach ($this->fileSystem->scanDirectory($scheme_file_directory, '/.*/') as $file) {
++            $destination = $scheme . '://' . ltrim(str_replace($scheme_file_directory, '', $file->uri), '/');
++            $directory = $this->fileSystem->dirname($destination);
++            $this->fileSystem->prepareDirectory($directory, FileSystemInterface::CREATE_DIRECTORY);
++            $this->fileSystem->copy($file->uri, $destination, FileSystemInterface::EXISTS_REPLACE);
++          }
++        }
++      }
+     }
+   }
+ 
+@@ -57,9 +85,9 @@ class FileSync implements FileSyncInterface {
+    * {@inheritdoc}
+    */
+   public function deleteExportDirectory() {
+-    $file_directory = $this->getFileDirectory();
+-    if (file_exists($file_directory)) {
+-      if (!$this->fileSystem->deleteRecursive($file_directory)) {
++    $base_file_directory = $this->getFileDirectory();
++    if (file_exists($base_file_directory)) {
++      if (!$this->fileSystem->deleteRecursive($base_file_directory)) {
+         return FALSE;
+       }
+     }
+@@ -70,13 +98,23 @@ class FileSync implements FileSyncInterface {
+    * {@inheritdoc}
+    */
+   public function exportFile(FileInterface $file) {
+-    $this->ensureFileDirectory();
+-    $file_directory = $this->getFileDirectory();
+-    if (strpos($file->getFileUri(), 'public://') === 0 && file_exists($file->getFileUri())) {
+-      $destination = $this->joinPaths($file_directory, StreamWrapperManager::getTarget($file->getFileUri()));
+-      $directory = dirname($destination);
+-      $this->fileSystem->prepareDirectory($directory, FileSystemInterface::CREATE_DIRECTORY);
+-      $this->fileSystem->copy($file->getFileUri(), $destination, FileSystemInterface::EXISTS_REPLACE);
++    $scheme = $this->streamWrapperManager->getScheme($file->getFileUri());
++    $scheme = !$scheme ? 'public' : $scheme;
++
++    if (in_array($scheme, $this->blacklistSchemes)) {
++      \Drupal::logger('tome_sync')->info('Blacklisted file scheme: ' . $scheme . ', skipping export of files');
++    } else {
++      $this->ensureFileDirectory($scheme);
++      $scheme_file_directory = $this->getFileDirectory() . '/' . $scheme;
++
++      if (!file_exists($file->getFileUri())) {
++        \Drupal::logger('tome_sync')->notice('Failed to export file: ' . $file->getFileUri() . ', as it does not exist on disk');
++      } else {
++        $destination = $this->joinPaths($scheme_file_directory, $this->streamWrapperManager->getTarget($file->getFileUri()));
++        $directory = $this->fileSystem->dirname($destination);
++        $this->fileSystem->prepareDirectory($directory, FileSystemInterface::CREATE_DIRECTORY);
++        $this->fileSystem->copy($file->getFileUri(), $destination, FileSystemInterface::EXISTS_REPLACE);
++      }
+     }
+   }
+ 
+@@ -84,13 +122,13 @@ class FileSync implements FileSyncInterface {
+    * {@inheritdoc}
+    */
+   public function deleteFileExport(FileInterface $file) {
+-    $file_directory = $this->getFileDirectory();
+-    if (strpos($file->getFileUri(), 'public://') === 0) {
+-      $path = $this->joinPaths($file_directory, StreamWrapperManager::getTarget($file->getFileUri()));
++    $base_file_directory = $this->getFileDirectory();
++    // if (strpos($file->getFileUri(), 'public://') === 0) {
++      $path = $this->joinPaths($base_file_directory, StreamWrapperManager::getTarget($file->getFileUri()));
+       if (file_exists($path)) {
+         $this->fileSystem->delete($path);
+       }
+-    }
++    // }
+   }
+ 
+   /**
+@@ -110,18 +148,24 @@ class FileSync implements FileSyncInterface {
+    *   The file directory.
+    */
+   protected function getFileDirectory() {
+-    return Settings::get('tome_files_directory', '../files') . '/public';
++    return Settings::get('tome_files_directory', '../files');
+   }
+ 
+   /**
+    * Ensures that the file directory exists.
+    */
+-  protected function ensureFileDirectory() {
+-    $file_directory = $this->getFileDirectory();
+-    $this->fileSystem->prepareDirectory($file_directory, FileSystemInterface::CREATE_DIRECTORY);
+-    FileSecurity::writeHtaccess($file_directory);
+-    if (!file_exists($file_directory)) {
+-      throw new StorageException('Failed to create config directory ' . $file_directory);
++  protected function ensureFileDirectory($scheme) {
++    $base_file_directory = $this->getFileDirectory();
++
++    if (!file_exists($base_file_directory)) {
++      $this->fileSystem->prepareDirectory($base_file_directory, FileSystemInterface::CREATE_DIRECTORY);
++      FileSecurity::writeHtaccess($base_file_directory);
++    }
++
++    $scheme_file_directory = $base_file_directory . '/' . $scheme;
++    $this->fileSystem->prepareDirectory($scheme_file_directory, FileSystemInterface::CREATE_DIRECTORY);
++    if (!file_exists($scheme_file_directory)) {
++      throw new StorageException('Failed to create file directory: ' . $scheme_file_directory);
+     }
+   }
+ 
+diff --git a/modules/tome_sync/src/Importer.php b/modules/tome_sync/src/Importer.php
+index da3a7f2..900749f 100644
+--- a/modules/tome_sync/src/Importer.php
++++ b/modules/tome_sync/src/Importer.php
+@@ -194,8 +194,28 @@ class Importer implements ImporterInterface {
+         $imported_entity = $original_entity;
+       }
+       else {
++        $original_entity = clone $entity;
+         $entity->enforceIsNew();
+         $entity->save();
++
++        // Cohesion has an issue where all UUID's are reset when an entity is saved as new
++        // This is normally used to prevent UUID collision when you duplicate a
++        // component in the UI, however is causes the UUID's on saved content to flap
++        // when importing / exporting as well.
++        //
++        // This will import the content as new, then re-save the original value over the
++        // newly created entity to reset the values back to what was on disk.
++        if ($entity_type_id == 'cohesion_layout') {
++          $results = $this->entityTypeManager->getStorage($entity_type_id)->loadByProperties([
++            $entity_type->getKey('uuid') => $uuid,
++          ]);
++          if (!empty($results)) {
++            $entity = reset($results);
++            $this->copyFieldValues($original_entity, $entity);
++            $entity->save();
++          }
++        }
++
+         $imported_entity = $entity;
+       }
+     }
+diff --git a/modules/tome_sync/src/Normalizer/MenuLinkContentEntityNormalizer.php b/modules/tome_sync/src/Normalizer/MenuLinkContentEntityNormalizer.php
+new file mode 100644
+index 0000000..4a42d19
+--- /dev/null
++++ b/modules/tome_sync/src/Normalizer/MenuLinkContentEntityNormalizer.php
+@@ -0,0 +1,73 @@
++<?php
++
++namespace Drupal\tome_sync\Normalizer;
++
++/**
++ * Normalizes/denormalizes Drupal MenuContentLink entities to store references to entities by UUID
++ *
++ * @internal
++ */
++class MenuLinkContentEntityNormalizer extends ContentEntityNormalizer {
++
++
++
++
++  /**
++   * {@inheritdoc}
++   */
++  protected $supportedInterfaceOrClass = 'Drupal\menu_link_content\Entity\MenuLinkContent';
++
++  /**
++   * {@inheritdoc}
++   */
++  public function denormalize($data, $class, $format = NULL, array $context = []) {
++    $entityRepository = \Drupal::service('entity.repository');
++
++    if (isset($data['link'])) {
++      $result = [];
++      foreach ($data['link'] as $linkItem) {
++        if (substr($linkItem['uri'], 0, 5) === 'uuid:') {
++          list($junk, $path) = explode(':', $linkItem['uri'], 2);
++          list($entityType, $uuid) = explode('/', $path, 2);
++          $linkedEntity = $entityRepository->loadEntityByUuid($entityType, $uuid);
++          if ($linkedEntity) {
++            $linkItem['uri'] = 'entity:'. $entityType .'/' . $linkedEntity->id();
++          } else {
++            $linkItem['uri'] = 'internal:#not-found';
++          }
++        }
++        $result[] = $linkItem;
++      }
++      $data['link'] = $result;
++    }
++
++    return parent::denormalize($data, $class, $format, $context);
++  }
++
++  /**
++   * {@inheritdoc}
++   */
++  public function normalize($entity, $format = NULL, array $context = []) {
++    $values = parent::normalize($entity, $format, $context);
++
++    if (isset($values['link'])) {
++      $result = [];
++      foreach ($values['link'] as $linkItem) {
++        if (substr($linkItem['uri'], 0, 7) === 'entity:') {
++          list($junk, $path) = explode(':', $linkItem['uri'], 2);
++          list($entityType, $nodeId) = explode('/', $path, 2);
++          $linkedEntity = $this->entityTypeManager->getStorage($entityType)->load($nodeId);
++          if ($linkedEntity) {
++            $uuid = $linkedEntity->uuid();
++            $linkItem['uri'] = 'uuid:'. $entityType .'/' . $uuid;
++          }
++        }
++        $result[] = $linkItem;
++      }
++      $values['link'] = $result;
++    }
++
++    return $values;
++  }
++
++}
+diff --git a/modules/tome_sync/src/Normalizer/PathAliasEntityNormalizer.php b/modules/tome_sync/src/Normalizer/PathAliasEntityNormalizer.php
+new file mode 100644
+index 0000000..8996d9e
+--- /dev/null
++++ b/modules/tome_sync/src/Normalizer/PathAliasEntityNormalizer.php
+@@ -0,0 +1,55 @@
++<?php
++
++namespace Drupal\tome_sync\Normalizer;
++
++use Drupal\tome_sync\TomeSyncHelper;
++
++/**
++ * Normalizes/denormalizes Drupal PathAlias entities to store references to entities by UUID
++ *
++ * @internal
++ */
++class PathAliasEntityNormalizer extends ContentEntityNormalizer {
++
++  /**
++   * {@inheritdoc}
++   */
++  protected $supportedInterfaceOrClass = 'Drupal\path_alias\Entity\PathAlias';
++
++  /**
++   * {@inheritdoc}
++   */
++  public function denormalize($data, $class, $format = NULL, array $context = []) {
++    $entityRepository = \Drupal::service('entity.repository');
++
++    if (isset($data['path'])) {
++      $result = [];
++      foreach ($data['path'] as $pathItem) {
++        $pathItem['value'] = TomeSyncHelper::denormalizePathReference($pathItem['value']);
++        $result[] = $pathItem;
++      }
++      $data['path'] = $result;
++    }
++
++    return parent::denormalize($data, $class, $format, $context);
++  }
++
++  /**
++   * {@inheritdoc}
++   */
++  public function normalize($entity, $format = NULL, array $context = []) {
++    $values = parent::normalize($entity, $format, $context);
++
++    if (isset($values['path'])) {
++      $result = [];
++      foreach ($values['path'] as $pathItem) {
++        $pathItem['value'] = TomeSyncHelper::normalizePathReference($pathItem['value']);
++        $result[] = $pathItem;
++      }
++      $values['path'] = $result;
++    }
++
++    return $values;
++  }
++
++}
+diff --git a/modules/tome_sync/src/TomeSyncHelper.php b/modules/tome_sync/src/TomeSyncHelper.php
+index 745473d..b254cf5 100644
+--- a/modules/tome_sync/src/TomeSyncHelper.php
++++ b/modules/tome_sync/src/TomeSyncHelper.php
+@@ -74,4 +74,82 @@ class TomeSyncHelper {
+     ];
+   }
+ 
++  /**
++   * Take a entity reference path in the form of '/{entity_type}/{pid}' and
++   * return a normalized version using the referenced entities UUID in the
++   * form of '/{entity_type}/{uuid}'
++   *
++   * @param string $path
++   *   Path in the form of '/{entity_type}/{pid}'
++   * @return string
++   *   Path in the form of '/{entity_type}/{uuid}'
++   */
++  public static function normalizePathReference($path) {
++    \Drupal::logger('tome_sync')->debug('Attempting to normalize path: ' . $path);
++
++    // Ensure we have a valid path
++    if (!preg_match('/^\/node\/.*$/', $path)) {
++      return $path;
++    }
++    \Drupal::logger('tome_sync')->debug('Normalizing path: ' . $path);
++
++    $entityTypeManager = \Drupal::entityTypeManager();
++    list($entityType, $nodeId) = explode('/', ltrim($path, '/'), 2);
++
++    \Drupal::logger('tome_sync')->debug('type: ' . $entityType . ' id: ' . $nodeId);
++
++    $linkedEntity = $entityTypeManager->getStorage($entityType)->load($nodeId);
++    if (isset($linkedEntity)) {
++      $uuid = $linkedEntity->uuid();
++      $result = '/'. $entityType .'/' . $uuid;
++    } else {
++      $result = $path;
++    }
++
++    \Drupal::logger('tome_sync')->debug('Normalized path: ' . $path . ' into: ' . $result);
++    return $result;
++  }
++
++  /**
++   * Take a normalized entity reference path in the form of
++   * '/{entity_type}/{uuid}' and return a denormalized version using the
++   * referenced entities node ID from the given local environment
++   *
++   * @param string $path
++   *   Path in the form of '/{entity_type}/{uuid}'
++   * @return string
++   *   Path in the form of '/{entity_type}/{pid}'
++   */
++  public static function denormalizePathReference($path) {
++    \Drupal::logger('tome_sync')->debug('Attempting to denormalize path: ' . $path);
++
++    // Ensure we have a valid path
++    if (!preg_match('/^\/node\/.*$/', $path)) {
++      return $path;
++    }
++
++    \Drupal::logger('tome_sync')->debug('Denormalizing path: ' . $path);
++
++    $entityRepository = \Drupal::service('entity.repository');
++    list($entityType, $uuid) = explode('/', ltrim($path, '/'), 2);
++
++    \Drupal::logger('tome_sync')->debug('type: ' . $entityType . ' id: ' . $uuid);
++
++    // Check to see if the id is more than just an integer
++    if (!preg_match('/^[0-9]+$/', $uuid)) {
++      $linkedEntity = $entityRepository->loadEntityByUuid($entityType, $uuid);
++      if (isset($linkedEntity)) {
++        $result = '/'. $entityType .'/' . $linkedEntity->id();
++      } else {
++        \Drupal::logger('tome_sync')->notice('Unable to find entity to denormalize path: ' . $path);
++        $result = $path;
++      }
++    } else {
++      $result = $path;
++    }
++
++    \Drupal::logger('tome_sync')->debug('Denormalized path: ' . $path . ' into: ' . $result);
++    return $result;
++  }
++
+ }
+diff --git a/modules/tome_sync/tome_sync.services.yml b/modules/tome_sync/tome_sync.services.yml
+index 1924194..c4e5f0e 100644
+--- a/modules/tome_sync/tome_sync.services.yml
++++ b/modules/tome_sync/tome_sync.services.yml
+@@ -1,4 +1,7 @@
+ services:
++  logger.channel.tome_sync:
++    parent: logger.channel_base
++    arguments: ['tome_sync']
+   tome_sync.storage.content:
+     class: Drupal\tome_sync\JsonFileStorage
+     factory: Drupal\tome_sync\JsonFileStorageFactory::getContent
+@@ -10,7 +13,7 @@ services:
+     arguments: ['@tome_sync.storage.content', '@serializer', '@entity_type.manager', '@event_dispatcher', '@account_switcher', '@tome_sync.file_sync', '@file_system']
+   tome_sync.file_sync:
+     class: Drupal\tome_sync\FileSync
+-    arguments: ['@file_system']
++    arguments: ['@file_system', '@stream_wrapper_manager']
+   tome_sync.content_hasher:
+     class: Drupal\tome_sync\ContentHasher
+     arguments: ['@database', '@tome_sync.storage.content']
+@@ -21,7 +24,17 @@ services:
+     - { name: event_subscriber }
+   tome_sync.config_event_subscriber:
+     class: Drupal\tome_sync\EventSubscriber\ConfigEventSubscriber
+-    arguments: ['@config.storage.sync']
++    arguments: ['@config.storage.sync', '@event_dispatcher', '@logger.channel.tome_sync', '@lock']
++    tags:
++      - { name: event_subscriber }
++  tome_sync.config_transformer_event_subscriber:
++    class: Drupal\tome_sync\EventSubscriber\ConfigTransformer
++    arguments: ['@logger.channel.tome_sync']
++    tags:
++      - { name: event_subscriber }
++  tome_sync.import_complete_event_subscriber:
++    class: Drupal\tome_sync\EventSubscriber\ImportCompleteEventSubscriber
++    arguments: ['@config.storage', '@config.storage.sync', '@logger.channel.tome_sync']
+     tags:
+       - { name: event_subscriber }
+   tome_sync.clean_files_command:
+@@ -48,6 +61,12 @@ services:
+     tags:
+       - { name: console.command }
+       - { name: drupal.command }
++  tome_sync.import_config_command:
++    class: Drupal\tome_sync\Commands\ImportConfigCommand
++    arguments: ['@tome_sync.importer', '@entity_type.manager', '@state']
++    tags:
++      - { name: console.command }
++      - { name: drupal.command }
+   tome_sync.delete_content_command:
+     class: Drupal\tome_sync\Commands\DeleteContentCommand
+     arguments: ['@tome_sync.importer', '@entity_type.manager', '@state', '@config.installer']
+@@ -72,6 +91,12 @@ services:
+     tags:
+       - { name: console.command }
+       - { name: drupal.command }
++  tome_sync.import_files_command:
++    class: Drupal\tome_sync\Commands\ImportFilesCommand
++    arguments: ['@tome_sync.importer', '@entity_type.manager', '@state']
++    tags:
++      - { name: console.command }
++      - { name: drupal.command }
+   serializer.normalizer.entity_reference_revision_tome_sync:
+     class: Drupal\tome_sync\Normalizer\EntityReferenceRevisionItemNormalizer
+     tags:
+@@ -107,6 +132,16 @@ services:
+     tags:
+       - { name: normalizer, priority: 1 }
+     arguments: ['@entity_type.manager', '@entity_type.repository', '@entity_field.manager']
++  serializer.normalizer.menu_link_content_entity_tome_sync:
++    class: Drupal\tome_sync\Normalizer\MenuLinkContentEntityNormalizer
++    tags:
++      - { name: normalizer, priority: 4 }
++    arguments: ['@entity_type.manager', '@entity_type.repository', '@entity_field.manager']
++  serializer.normalizer.path_alias_entity_tome_sync:
++    class: Drupal\tome_sync\Normalizer\PathAliasEntityNormalizer
++    tags:
++      - { name: normalizer, priority: 5 }
++    arguments: ['@entity_type.manager', '@entity_type.repository', '@entity_field.manager']
+   serializer.normalizer.path_alias_tome_sync:
+     class: Drupal\tome_sync\Normalizer\PathAliasNormalizer
+     tags:
+-- 
+2.15.1
+

@@ -1,0 +1,50 @@
+{
+    "uuid": [
+        {
+            "value": "aafa3621-5bed-4895-abd8-9ed5ef155a38"
+        }
+    ],
+    "langcode": [
+        {
+            "value": "en"
+        }
+    ],
+    "uid": [],
+    "filename": [
+        {
+            "value": "icomoon.eot"
+        }
+    ],
+    "uri": [
+        {
+            "value": "public:\/\/cohesion\/icomoon.eot"
+        }
+    ],
+    "filemime": [
+        {
+            "value": "application\/octet-stream"
+        }
+    ],
+    "filesize": [
+        {
+            "value": 184360
+        }
+    ],
+    "status": [
+        {
+            "value": true
+        }
+    ],
+    "created": [
+        {
+            "value": "2021-10-19T17:07:06+00:00",
+            "format": "Y-m-d\\TH:i:sP"
+        }
+    ],
+    "changed": [
+        {
+            "value": "2021-10-19T17:07:06+00:00",
+            "format": "Y-m-d\\TH:i:sP"
+        }
+    ]
+}

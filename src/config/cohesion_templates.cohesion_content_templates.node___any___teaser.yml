@@ -1,0 +1,16 @@
+uuid: 5584602f-36b7-4ebd-92a5-b624f108aa41
+langcode: en
+status: false
+dependencies: {  }
+id: node___any___teaser
+label: 'Teaser (Node)'
+last_entity_update: entityupdate_0031
+modified: false
+selectable: false
+custom: false
+twig_template: null
+default: false
+entity_type: node
+bundle: __any__
+view_mode: teaser
+master_template: ''

@@ -1,0 +1,16 @@
+uuid: c9b15beb-1fa0-464b-abbf-428919de37ec
+langcode: en
+status: false
+dependencies: {  }
+id: node___any___search_index
+label: 'Search index (Node)'
+last_entity_update: entityupdate_0031
+modified: false
+selectable: false
+custom: false
+twig_template: null
+default: false
+entity_type: node
+bundle: __any__
+view_mode: search_index
+master_template: ''

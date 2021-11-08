@@ -1,0 +1,16 @@
+uuid: 37b3e078-37a8-47a6-8491-2ccfe8c14c52
+langcode: en
+status: false
+dependencies: {  }
+id: media_document_small
+label: 'Small (Media, Document)'
+last_entity_update: entityupdate_0031
+modified: false
+selectable: false
+custom: false
+twig_template: null
+default: false
+entity_type: media
+bundle: document
+view_mode: small
+master_template: ''

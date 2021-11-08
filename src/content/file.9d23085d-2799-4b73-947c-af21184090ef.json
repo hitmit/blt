@@ -1,0 +1,50 @@
+{
+    "uuid": [
+        {
+            "value": "9d23085d-2799-4b73-947c-af21184090ef"
+        }
+    ],
+    "langcode": [
+        {
+            "value": "en"
+        }
+    ],
+    "uid": [],
+    "filename": [
+        {
+            "value": "selection.json"
+        }
+    ],
+    "uri": [
+        {
+            "value": "public:\/\/cohesion\/selection.json"
+        }
+    ],
+    "filemime": [
+        {
+            "value": "application\/octet-stream"
+        }
+    ],
+    "filesize": [
+        {
+            "value": 51338
+        }
+    ],
+    "status": [
+        {
+            "value": true
+        }
+    ],
+    "created": [
+        {
+            "value": "2021-10-19T17:07:06+00:00",
+            "format": "Y-m-d\\TH:i:sP"
+        }
+    ],
+    "changed": [
+        {
+            "value": "2021-10-19T17:07:06+00:00",
+            "format": "Y-m-d\\TH:i:sP"
+        }
+    ]
+}

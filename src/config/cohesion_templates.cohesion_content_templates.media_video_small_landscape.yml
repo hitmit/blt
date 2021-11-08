@@ -1,0 +1,16 @@
+uuid: dc33262e-b5ab-44bf-ad76-5794aa3416dc
+langcode: en
+status: false
+dependencies: {  }
+id: media_video_small_landscape
+label: 'Small landscape (Media, Video)'
+last_entity_update: entityupdate_0031
+modified: false
+selectable: false
+custom: false
+twig_template: null
+default: false
+entity_type: media
+bundle: video
+view_mode: small_landscape
+master_template: ''

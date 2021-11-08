@@ -1,0 +1,6 @@
+replacements:
+  example_email: email@example.com
+  example_phone: '02070000000'
+  example_link: 'http://www.example.com'
+_core:
+  default_config_hash: kH8_i4ocvgHAa_iDZRIKEYG6VZGy5hiK1kLH1jKir-o

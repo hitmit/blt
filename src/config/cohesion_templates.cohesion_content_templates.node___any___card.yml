@@ -1,0 +1,16 @@
+uuid: eb33114e-a4d0-4bec-9deb-e6f8e372b866
+langcode: en
+status: false
+dependencies: {  }
+id: node___any___card
+label: 'Card (Node)'
+last_entity_update: entityupdate_0031
+modified: false
+selectable: false
+custom: false
+twig_template: null
+default: false
+entity_type: node
+bundle: __any__
+view_mode: card
+master_template: ''

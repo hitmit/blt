@@ -1,0 +1,16 @@
+uuid: 10acda3a-7c05-40ae-9f35-ebed91e657e2
+langcode: en
+status: false
+dependencies: {  }
+id: media___any___large_landscape
+label: 'Large landscape (Media)'
+last_entity_update: entityupdate_0031
+modified: false
+selectable: false
+custom: false
+twig_template: null
+default: false
+entity_type: media
+bundle: __any__
+view_mode: large_landscape
+master_template: ''

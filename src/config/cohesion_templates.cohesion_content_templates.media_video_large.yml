@@ -1,0 +1,16 @@
+uuid: dc83f497-43af-43d2-a5a1-600f81f9e73a
+langcode: en
+status: false
+dependencies: {  }
+id: media_video_large
+label: 'Large (Media, Video)'
+last_entity_update: entityupdate_0031
+modified: false
+selectable: false
+custom: false
+twig_template: null
+default: false
+entity_type: media
+bundle: video
+view_mode: large
+master_template: ''

@@ -1,0 +1,28 @@
+diff --git a/InstallCommands.php b/InstallCommands.php
+index 9e4546f..fc25bad 100644
+--- a/InstallCommands.php
++++ b/InstallCommands.php
+@@ -44,14 +44,20 @@ class InstallCommands extends DrushCommands implements SiteAliasManagerAwareInte
+     $config = $source_storage->read('core.extension');
+ 
+     $self = $this->siteAliasManager()->getSelf();
+-    Drush::drush($self, 'site-install', [$config['profile']], ['yes' => TRUE, 'sites-subdir' => 'default'])->mustRun();
++
++    $siteInstallProcess = Drush::drush($self, 'site-install', [$config['profile']], ['yes' => TRUE, 'sites-subdir' => 'default']);
++    $siteInstallProcess->mustRun($siteInstallProcess->showRealtime());
++
+     if (isset($config['module']['tome_sync'])) {
+-      Drush::drush($self, 'pm:enable', ['tome_sync'], ['yes' => TRUE])->mustRun();
++      Drush::drush($self, 'pm:enable', ['tome_sync', 'cohesion_tome'], ['yes' => TRUE])->mustRun();
+     }
+     else {
+       Drush::drush($self, 'pm:enable', ['tome'], ['yes' => TRUE])->mustRun();
+     }
+-    Drush::drush($self, 'tome:import', [], ['yes' => TRUE])->mustRun();
++
++    $importProcess = Drush::drush($self, 'tome:import', [], ['yes' => TRUE]);
++    $importProcess->mustRun($importProcess->showRealtime());
++
+     Drush::drush($self, 'cache:rebuild', [], ['yes' => TRUE])->mustRun();
+ 
+     $this->io()->success('Install complete!');

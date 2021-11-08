@@ -1,0 +1,16 @@
+uuid: 5a2d3658-3e6e-4698-94bf-c1b4db7e153d
+langcode: en
+status: false
+dependencies: {  }
+id: node_place_search_index
+label: 'Search index (Node, Place)'
+last_entity_update: entityupdate_0031
+modified: false
+selectable: false
+custom: false
+twig_template: null
+default: false
+entity_type: node
+bundle: place
+view_mode: search_index
+master_template: ''

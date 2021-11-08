@@ -1,0 +1,16 @@
+uuid: 88346935-2478-4366-9b12-644000274c52
+langcode: en
+status: false
+dependencies: {  }
+id: media_audio_small_landscape
+label: 'Small landscape (Media, Audio)'
+last_entity_update: entityupdate_0031
+modified: false
+selectable: false
+custom: false
+twig_template: null
+default: false
+entity_type: media
+bundle: audio
+view_mode: small_landscape
+master_template: ''

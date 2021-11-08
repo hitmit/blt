@@ -1,0 +1,16 @@
+uuid: ceb92e2c-9620-4339-8766-ccbc73e76c4a
+langcode: en
+status: false
+dependencies: {  }
+id: media_audio_medium
+label: 'Medium (Media, Audio)'
+last_entity_update: entityupdate_0031
+modified: false
+selectable: false
+custom: false
+twig_template: null
+default: false
+entity_type: media
+bundle: audio
+view_mode: medium
+master_template: ''

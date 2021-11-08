@@ -1,0 +1,27 @@
+uuid: 5e83cdf0-0669-45f5-af90-94ef1006ba75
+langcode: en
+status: true
+dependencies:
+  module:
+    - acquia_cms_common
+    - node
+    - taxonomy
+third_party_settings:
+  acquia_cms_common:
+    search_index: content
+    search_label: Categories
+_core:
+  default_config_hash: X6tX0LjrDq9BGLw7eQzI2Ha-tjdYQdjRzIMNmvRs1SI
+id: node.field_categories
+field_name: field_categories
+entity_type: node
+type: entity_reference
+settings:
+  target_type: taxonomy_term
+module: core
+locked: false
+cardinality: -1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

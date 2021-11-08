@@ -1,0 +1,9 @@
+name: melt CMS Article
+type: module
+description: Extends Acquia CMS Article module
+package: meltmedia
+core: 8.x
+core_version_requirement: ^8 || ^9
+dependencies:
+  - drupal:acquia_cms_article
+  - drupal:config_rewrite

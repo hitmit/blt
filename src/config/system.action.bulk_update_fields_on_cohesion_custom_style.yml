@@ -1,0 +1,11 @@
+uuid: db8b260c-6d14-4486-90aa-8e3e3bc51ad8
+langcode: en
+status: true
+dependencies:
+  module:
+    - bulk_update_fields
+id: bulk_update_fields_on_cohesion_custom_style
+label: 'Bulk Update Custom style Fields'
+type: cohesion_custom_style
+plugin: bulk_update_fields_action_base
+configuration: {  }

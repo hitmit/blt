@@ -1,0 +1,6 @@
+format: '{"base_url":"@base_url", "timestamp":"@timestamp", "type":"@type", "ip":"@ip", "request_uri":"@request_uri", "referer":"@referer", "uid":"@uid", "link":"@link", "message":"@message", "date":"@date","severity":"@severity","username":"@username"}'
+use_stderr: '0'
+always_stderr: '1'
+replace_quotes: '1'
+_core:
+  default_config_hash: 2Q08efV_NN1bBBfs3H0vEv--J54l-dRMaDcUoUmp0RU

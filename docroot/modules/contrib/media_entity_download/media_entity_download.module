@@ -1,0 +1,43 @@
+<?php
+
+/**
+ * @file
+ * Contains media_entity_download.module.
+ */
+
+use Drupal\Core\Entity\ContentEntityInterface;
+use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Field\BaseFieldDefinition;
+
+/**
+ * Implements hook_entity_base_field_info().
+ */
+function media_entity_download_entity_base_field_info(EntityTypeInterface $entity_type) {
+  if ($entity_type->id() == 'media') {
+    $fields['media_download_path'] = BaseFieldDefinition::create('media_download_path')
+      ->setLabel(t('Download URL alias'))
+      ->setTranslatable(TRUE)
+      ->setDisplayOptions('form', [
+        'type' => 'media_download_path',
+        'weight' => 29,
+      ])
+      ->setDisplayConfigurable('form', TRUE)
+      ->setComputed(TRUE);
+
+    return $fields;
+  }
+}
+
+/**
+ * Implements hook_entity_translation_create().
+ */
+function media_entity_download_entity_translation_create(ContentEntityInterface $translation) {
+  foreach ($translation->getFieldDefinitions() as $field_name => $field_definition) {
+    if ($field_definition->getType() === 'media_download_path' && $translation->get($field_name)->pid) {
+      // If there are values and a path ID, update the langcode and unset the
+      // path ID to save this as a new alias.
+      $translation->get($field_name)->langcode = $translation->language()->getId();
+      $translation->get($field_name)->pid = NULL;
+    }
+  }
+}

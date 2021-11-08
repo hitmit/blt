@@ -1,0 +1,26 @@
+diff --git a/src/ConfigRewriter.php b/src/ConfigRewriter.php
+index 9c84791..7d0140e 100644
+--- a/src/ConfigRewriter.php
++++ b/src/ConfigRewriter.php
+@@ -130,10 +130,21 @@ class ConfigRewriter implements ConfigRewriterInterface {
+           $config = $this->languageConfigFactoryOverride->getOverride($langcode, $file->name);
+           $original_data = $config->get();
+ 
++          // If the config does not exist in the active configuration do not create a new one with only partial content.
++          if($config->isNew()) {
++            continue;
++          }
++
+           $rewrite = $this->rewriteConfig($original_data, $rewrite, $file->name, $extension->getName());
+         }
+         else {
+           $config = $this->configFactory->getEditable($file->name);
++
++          // If the config does not exist in the active configuration do not create a new one with only partial content.
++          if($config->isNew()) {
++            continue;
++          }
++
+           $original_data = $config->getRawData();
+ 
+           $rewrite = $this->rewriteConfig($original_data, $rewrite, $file->name, $extension->getName());
