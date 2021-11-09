@@ -1,0 +1,15 @@
+{
+    "name": "drupal/melt_cms_starter",
+    "type": "drupal-module",
+    "description": "Contains the example content for demonstration.",
+    "require": {
+        "drupal/melt_cms_document": "^1.0",
+        "drupal/melt_cms_event": "^1.0",
+        "drupal/melt_cms_page": "^1.0",
+        "drupal/melt_cms_search": "^1.0",
+        "drupal/melt_cms_video": "^1.0",
+        "drupal/config_rewrite": "1.4",
+        "drupal/default_content": "^2",
+        "drupal/webform": "^6.0"
+    }
+}

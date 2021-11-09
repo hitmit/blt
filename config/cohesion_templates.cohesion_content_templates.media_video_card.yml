@@ -1,0 +1,16 @@
+uuid: 25669161-9e2f-4007-8265-d634e44428c5
+langcode: en
+status: false
+dependencies: {  }
+id: media_video_card
+label: 'Card (Media, Video)'
+last_entity_update: entityupdate_0031
+modified: false
+selectable: false
+custom: false
+twig_template: null
+default: false
+entity_type: media
+bundle: video
+view_mode: card
+master_template: ''

@@ -1,0 +1,16 @@
+uuid: e9a8838b-adbb-4965-a259-9f15b90e3c1c
+langcode: en
+status: false
+dependencies: {  }
+id: node_place_rss
+label: 'RSS (Node, Place)'
+last_entity_update: entityupdate_0031
+modified: false
+selectable: false
+custom: false
+twig_template: null
+default: false
+entity_type: node
+bundle: place
+view_mode: rss
+master_template: ''

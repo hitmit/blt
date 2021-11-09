@@ -1,0 +1,16 @@
+uuid: e7c8a905-cb9b-4021-9149-98ac6a0892a5
+langcode: en
+status: false
+dependencies: {  }
+id: node_place_token
+label: 'Token (Node, Place)'
+last_entity_update: entityupdate_0031
+modified: false
+selectable: false
+custom: false
+twig_template: null
+default: false
+entity_type: node
+bundle: place
+view_mode: token
+master_template: ''

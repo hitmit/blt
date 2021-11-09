@@ -1,0 +1,11 @@
+uuid: 3b4436d5-5b70-41f9-8351-696e12eef411
+langcode: en
+status: true
+dependencies:
+  module:
+    - bulk_update_fields
+id: bulk_update_fields_on_cohesion_component
+label: 'Bulk Update Component Fields'
+type: cohesion_component
+plugin: bulk_update_fields_action_base
+configuration: {  }

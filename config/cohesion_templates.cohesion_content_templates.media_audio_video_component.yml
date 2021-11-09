@@ -1,0 +1,16 @@
+uuid: 41591983-f498-47d8-877c-21f1c602cca9
+langcode: en
+status: false
+dependencies: {  }
+id: media_audio_video_component
+label: 'Video component (Media, Audio)'
+last_entity_update: entityupdate_0031
+modified: false
+selectable: false
+custom: false
+twig_template: null
+default: false
+entity_type: media
+bundle: audio
+view_mode: video_component
+master_template: ''

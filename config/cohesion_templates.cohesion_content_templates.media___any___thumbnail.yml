@@ -1,0 +1,16 @@
+uuid: 7d3a53e8-5939-4087-9ffd-c3581029b3b6
+langcode: en
+status: false
+dependencies: {  }
+id: media___any___thumbnail
+label: 'Thumbnail (Media)'
+last_entity_update: entityupdate_0031
+modified: false
+selectable: false
+custom: false
+twig_template: null
+default: false
+entity_type: media
+bundle: __any__
+view_mode: thumbnail
+master_template: ''

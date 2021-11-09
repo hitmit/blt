@@ -1,0 +1,43 @@
+uuid: b8775ac9-2d7b-44c3-b25f-6e9234703387
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.media.medium
+    - field.field.media.image.field_categories
+    - field.field.media.image.field_media_image
+    - field.field.media.image.field_tags
+    - field.field.media.image.image
+    - media.type.image
+  enforced:
+    module:
+      - acquia_cms_image
+  module:
+    - image
+_core:
+  default_config_hash: 7ISBzdieN7iXz4hZg8J72uIe6K4klwGcH_hNu6bmdQE
+id: media.image.medium
+targetEntityType: media
+bundle: image
+mode: medium
+content:
+  image:
+    type: image
+    weight: 0
+    region: content
+    label: hidden
+    settings:
+      image_style: ''
+      image_link: ''
+    third_party_settings: {  }
+hidden:
+  addtoany: true
+  created: true
+  field_categories: true
+  field_media_image: true
+  field_tags: true
+  langcode: true
+  name: true
+  search_api_excerpt: true
+  thumbnail: true
+  uid: true

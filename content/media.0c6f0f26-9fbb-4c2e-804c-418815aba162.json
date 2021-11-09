@@ -1,0 +1,103 @@
+{
+    "uuid": [
+        {
+            "value": "0c6f0f26-9fbb-4c2e-804c-418815aba162"
+        }
+    ],
+    "langcode": [
+        {
+            "value": "en"
+        }
+    ],
+    "bundle": [
+        {
+            "target_id": "image",
+            "target_type": "media_type",
+            "target_uuid": "de236a44-932b-4851-b0ba-e1312b8d9f9d"
+        }
+    ],
+    "revision_created": [
+        {
+            "value": "2021-10-19T17:06:18+00:00",
+            "format": "Y-m-d\\TH:i:sP"
+        }
+    ],
+    "revision_user": [],
+    "revision_log_message": [],
+    "status": [
+        {
+            "value": true
+        }
+    ],
+    "uid": [
+        {
+            "target_type": "user",
+            "target_uuid": "46b67a39-bdd8-4dcb-a7cf-246d5a04ef49"
+        }
+    ],
+    "name": [
+        {
+            "value": "Acquia CMS.png"
+        }
+    ],
+    "thumbnail": [
+        {
+            "alt": null,
+            "title": null,
+            "width": 180,
+            "height": 180,
+            "target_type": "file",
+            "target_uuid": "84c68924-9090-417a-bfb4-ef07da348f8f"
+        }
+    ],
+    "created": [
+        {
+            "value": "2021-02-12T10:57:37+00:00",
+            "format": "Y-m-d\\TH:i:sP"
+        }
+    ],
+    "changed": [
+        {
+            "value": "2021-10-19T17:06:18+00:00",
+            "format": "Y-m-d\\TH:i:sP"
+        }
+    ],
+    "default_langcode": [
+        {
+            "value": true
+        }
+    ],
+    "revision_translation_affected": [
+        {
+            "value": true
+        }
+    ],
+    "media_download_path": [
+        {
+            "alias": null,
+            "pid": null,
+            "langcode": "en"
+        }
+    ],
+    "path": [
+        {
+            "alias": null,
+            "pid": null,
+            "langcode": "en",
+            "pathauto": 0
+        }
+    ],
+    "field_categories": [],
+    "field_media_image": [],
+    "field_tags": [],
+    "image": [
+        {
+            "alt": "Acquia CMS logo",
+            "title": "",
+            "width": 286,
+            "height": 112,
+            "target_type": "file",
+            "target_uuid": "6ffaab81-4d86-478b-b5fb-1db752ae92cc"
+        }
+    ]
+}

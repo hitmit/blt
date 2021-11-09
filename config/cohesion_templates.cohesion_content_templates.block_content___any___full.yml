@@ -1,0 +1,16 @@
+uuid: 8f09eb28-fc27-4569-808c-5bc3b04a0b1f
+langcode: en
+status: false
+dependencies: {  }
+id: block_content___any___full
+label: 'Full (Block_content)'
+last_entity_update: entityupdate_0031
+modified: false
+selectable: false
+custom: false
+twig_template: null
+default: false
+entity_type: block_content
+bundle: __any__
+view_mode: full
+master_template: ''

@@ -1,0 +1,30 @@
+uuid: 92d2c642-c685-4abd-8459-63777e9c89f6
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - acquia_cms_place
+  module:
+    - acquia_cms_common
+    - node
+    - taxonomy
+third_party_settings:
+  acquia_cms_common:
+    search_index: content
+    search_label: 'Place Type'
+_core:
+  default_config_hash: Cdfb_qH1tnqFJNv1gG7J7bliEmBT7Ql823bizT9pS10
+id: node.field_place_type
+field_name: field_place_type
+entity_type: node
+type: entity_reference
+settings:
+  target_type: taxonomy_term
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

@@ -1,0 +1,16 @@
+uuid: ca98cbc0-9980-404e-92b8-a790893bc36e
+langcode: en
+status: false
+dependencies: {  }
+id: media_remote_video_video_compone
+label: 'Video component (Media, Remote video)'
+last_entity_update: entityupdate_0031
+modified: false
+selectable: false
+custom: false
+twig_template: null
+default: false
+entity_type: media
+bundle: remote_video
+view_mode: video_component
+master_template: ''

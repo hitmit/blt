@@ -1,0 +1,4 @@
+administer melt_cms_person configuration:
+  title: 'Administer melt_cms_person configuration'
+  description: 'Optional description.'
+  restrict access: true

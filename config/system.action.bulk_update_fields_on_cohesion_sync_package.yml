@@ -1,0 +1,11 @@
+uuid: 657d4084-8c13-44fe-b160-96e567a07f2a
+langcode: en
+status: true
+dependencies:
+  module:
+    - bulk_update_fields
+id: bulk_update_fields_on_cohesion_sync_package
+label: 'Bulk Update Package Fields'
+type: cohesion_sync_package
+plugin: bulk_update_fields_action_base
+configuration: {  }

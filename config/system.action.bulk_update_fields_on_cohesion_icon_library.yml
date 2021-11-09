@@ -1,0 +1,11 @@
+uuid: 578ed0cc-e558-441d-b0b0-4dafe5a41dc2
+langcode: en
+status: true
+dependencies:
+  module:
+    - bulk_update_fields
+id: bulk_update_fields_on_cohesion_icon_library
+label: 'Bulk Update Icon library Fields'
+type: cohesion_icon_library
+plugin: bulk_update_fields_action_base
+configuration: {  }

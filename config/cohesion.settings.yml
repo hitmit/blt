@@ -1,0 +1,11 @@
+api_url: 'https://api.cohesiondx.com'
+api_key: 26568a22-c7ed-11e8-a8d5-f2801f1b9fd
+organization_key: meltmedia-2018-5lkhvmgut
+site_id: a6043221-f09e-4795-a3ef-6f42b8d698e7
+api_build_status: NO_CONTENT
+google_map_api_key: ''
+elements_permissions: '{}'
+sidebar_view_style: thumbnails
+_core:
+  default_config_hash: gpIMmHdWGMtTf2ZJoO-QHF9bk9ZVESnX-4LD-r3YtTw
+asset_is_imported: '1'

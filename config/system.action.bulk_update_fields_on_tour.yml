@@ -1,0 +1,11 @@
+uuid: 255713c2-b847-4abd-a6e3-c11cf560926b
+langcode: en
+status: true
+dependencies:
+  module:
+    - bulk_update_fields
+id: bulk_update_fields_on_tour
+label: 'Bulk Update Tour Fields'
+type: tour
+plugin: bulk_update_fields_action_base
+configuration: {  }

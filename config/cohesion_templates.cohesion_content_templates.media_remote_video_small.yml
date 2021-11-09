@@ -1,0 +1,16 @@
+uuid: 93c332f6-18fe-4f5e-bcf2-2afe380be8ae
+langcode: en
+status: false
+dependencies: {  }
+id: media_remote_video_small
+label: 'Small (Media, Remote video)'
+last_entity_update: entityupdate_0031
+modified: false
+selectable: false
+custom: false
+twig_template: null
+default: false
+entity_type: media
+bundle: remote_video
+view_mode: small
+master_template: ''

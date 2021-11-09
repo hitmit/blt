@@ -1,0 +1,16 @@
+uuid: a94990d6-6369-4239-82a4-112c2567c8cb
+langcode: en
+status: false
+dependencies: {  }
+id: block_content___any___token
+label: 'Token (Block_content)'
+last_entity_update: entityupdate_0031
+modified: false
+selectable: false
+custom: false
+twig_template: null
+default: false
+entity_type: block_content
+bundle: __any__
+view_mode: token
+master_template: ''

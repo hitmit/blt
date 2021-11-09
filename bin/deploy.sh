@@ -5,7 +5,7 @@ set -e
 # Setup our variables
 ACQUIA_REMOTE="git@github.com:hitmit/blt.git"
 # ACQUIA_REMOTE_BRANCH=""
-ACQUIA_REMOTE_BRANCH=develop-build2
+ACQUIA_REMOTE_BRANCH=test3-build
 BUILD_BRANCH=${ACQUIA_REMOTE_BRANCH}
 BUILD_PATH="deploy"
 
@@ -34,35 +34,48 @@ fi
 
 # Copy all build files
 echo "Copying all build files..."
-rsync -rtl --delete --exclude=".git" --exclude="src/web/sites"  ./src ./bin .gitignore-deploy ./composer.json ./composer.lock ${BUILD_PATH}
+rsync -rtl --delete --exclude=".git" --exclude="src/web/sites"  ./src ./bin .gitignore-deploy composer.json-deploy  ${BUILD_PATH}
 
 
 # Commit the changes to the build branch or tag
 cd ${BUILD_PATH}
 echo  "${BUILD_PATH}.."
+echo "Switching composer json"
+mv composer.json-deploy composer.json
+
 # Composer install
 echo "Running composer install..."
 composer install --no-dev --no-interaction --optimize-autoloader
 echo "Switching src to docroot..."
-mv src/web docroot
+rm -Rf docroot
+mv src/web ./
+mv web docroot
 
 rm -Rf docroot/themes/custom
-ln -s ../../src/themes docroot/themes/custom
+cp -r src/themes docroot/themes/custom
 
 rm -Rf docroot/modules/custom
-ln -s ../../src/modules docroot/modules/custom
+cp -r src/modules docroot/modules/custom
 
-rm -Rf docroot/profiles/custom
-ln -s ../../src/profiles docroot/profiles/custom
+# # rm -Rf docroot/profiles/custom
+# # cp -r src/profiles docroot/profiles/custom
+
+
+cp -r src/content ./
+
+cp -r src/config ./
+
+# mv src/vendor ./
 
 echo "Committing changes to ${BUILD_BRANCH}..."
 git checkout -B ${BUILD_BRANCH}
 echo "Switching .gitignore"
 mv .gitignore-deploy .gitignore
 git add --all
+# git add -f vendor
 git commit --allow-empty --quiet -m "Build of ${TRAVIS_BRANCH}"
 
-# Cut a tag if this is a tag build, and do any needed pushes
+# # Cut a tag if this is a tag build, and do any needed pushes
 if [ -n "${TRAVIS_TAG}" ]; then
   echo "Cutting a tag of ${BUILD_BRANCH}..."
   git tag -a "${TRAVIS_TAG}" -m "Build of source tag ${TRAVIS_TAG}"

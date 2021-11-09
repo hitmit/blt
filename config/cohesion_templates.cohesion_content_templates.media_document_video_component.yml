@@ -1,0 +1,16 @@
+uuid: 5ff3da22-e4dd-4ac6-b3e6-86f52e7c4fe2
+langcode: en
+status: false
+dependencies: {  }
+id: media_document_video_component
+label: 'Video component (Media, Document)'
+last_entity_update: entityupdate_0031
+modified: false
+selectable: false
+custom: false
+twig_template: null
+default: false
+entity_type: media
+bundle: document
+view_mode: video_component
+master_template: ''

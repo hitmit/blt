@@ -1,0 +1,16 @@
+uuid: 1b429dbb-aa10-4a21-ab68-8c7899c6d340
+langcode: en
+status: false
+dependencies: {  }
+id: comment_comment_full
+label: 'Full comment (Comment, Default comments)'
+last_entity_update: entityupdate_0031
+modified: false
+selectable: false
+custom: false
+twig_template: null
+default: false
+entity_type: comment
+bundle: comment
+view_mode: full
+master_template: ''

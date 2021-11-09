@@ -1,0 +1,11 @@
+uuid: fc086c8f-4d39-4274-b82b-330ba7850f1b
+langcode: en
+status: true
+dependencies:
+  module:
+    - bulk_update_fields
+id: bulk_update_fields_on_crop
+label: 'Bulk Update Crop Fields'
+type: crop
+plugin: bulk_update_fields_action_base
+configuration: {  }

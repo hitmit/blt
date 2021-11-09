@@ -1,0 +1,11 @@
+uuid: a817064e-8856-4244-88d6-acf3d2ef4387
+langcode: en
+status: true
+dependencies:
+  module:
+    - bulk_update_fields
+id: bulk_update_fields_on_cohesion_menu_templates
+label: 'Bulk Update Menu template Fields'
+type: cohesion_menu_templates
+plugin: bulk_update_fields_action_base
+configuration: {  }

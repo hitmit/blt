@@ -1,0 +1,16 @@
+uuid: 5e212dcd-3328-4231-8f36-2e3e1460c6cf
+langcode: en
+status: false
+dependencies: {  }
+id: media_audio_small
+label: 'Small (Media, Audio)'
+last_entity_update: entityupdate_0031
+modified: false
+selectable: false
+custom: false
+twig_template: null
+default: false
+entity_type: media
+bundle: audio
+view_mode: small
+master_template: ''

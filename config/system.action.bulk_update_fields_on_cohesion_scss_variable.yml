@@ -1,0 +1,11 @@
+uuid: 2330992e-3f56-4333-a8c4-63270c392f01
+langcode: en
+status: true
+dependencies:
+  module:
+    - bulk_update_fields
+id: bulk_update_fields_on_cohesion_scss_variable
+label: 'Bulk Update SCSS Variable Fields'
+type: cohesion_scss_variable
+plugin: bulk_update_fields_action_base
+configuration: {  }

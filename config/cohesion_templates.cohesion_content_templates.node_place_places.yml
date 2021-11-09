@@ -1,0 +1,16 @@
+uuid: 06bb9e6e-b44e-4141-bcc6-ea22b590e4be
+langcode: en
+status: false
+dependencies: {  }
+id: node_place_places
+label: 'Places (Node, Place)'
+last_entity_update: entityupdate_0031
+modified: false
+selectable: false
+custom: false
+twig_template: null
+default: false
+entity_type: node
+bundle: place
+view_mode: places
+master_template: ''

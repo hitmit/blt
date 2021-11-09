@@ -1,0 +1,52 @@
+{
+    "uuid": [
+        {
+            "value": "6ffaab81-4d86-478b-b5fb-1db752ae92cc"
+        }
+    ],
+    "langcode": [
+        {
+            "value": "en"
+        }
+    ],
+    "uid": [
+        []
+    ],
+    "filename": [
+        {
+            "value": "Acquia CMS.png"
+        }
+    ],
+    "uri": [
+        {
+            "value": "public:\/\/2021-02\/Acquia CMS.png"
+        }
+    ],
+    "filemime": [
+        {
+            "value": "image\/png"
+        }
+    ],
+    "filesize": [
+        {
+            "value": 27577
+        }
+    ],
+    "status": [
+        {
+            "value": true
+        }
+    ],
+    "created": [
+        {
+            "value": "2021-02-12T10:57:37+00:00",
+            "format": "Y-m-d\\TH:i:sP"
+        }
+    ],
+    "changed": [
+        {
+            "value": "2021-10-19T17:06:18+00:00",
+            "format": "Y-m-d\\TH:i:sP"
+        }
+    ]
+}

@@ -1,0 +1,8 @@
+target_selector: .sticky-drawer
+target_wrapper_selector: .sticky-drawer-wrapper
+toggle_selector: .sticky-drawer-toggle
+toggle_action: scroll
+scrollToContainer_selector: .sticky-drawer-wrapper
+request_path: {  }
+_core:
+  default_config_hash: grT-b3PM_S6rDNy2ZOad3Deh_DE9xmss4q4eMHYRFFg

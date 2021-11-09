@@ -1,0 +1,16 @@
+uuid: 69b96ae6-131d-4900-a1d5-5a435d2bc1bc
+langcode: en
+status: false
+dependencies: {  }
+id: contact_message_feedback_token
+label: 'Token (Contact_message, Website feedback)'
+last_entity_update: entityupdate_0031
+modified: false
+selectable: false
+custom: false
+twig_template: null
+default: false
+entity_type: contact_message
+bundle: feedback
+view_mode: token
+master_template: ''

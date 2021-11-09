@@ -1,0 +1,16 @@
+uuid: 1389914f-d4e6-4ad6-86da-4d7042cab655
+langcode: en
+status: false
+dependencies: {  }
+id: media_document_medium_landscape
+label: 'Medium landscape (Media, Document)'
+last_entity_update: entityupdate_0031
+modified: false
+selectable: false
+custom: false
+twig_template: null
+default: false
+entity_type: media
+bundle: document
+view_mode: medium_landscape
+master_template: ''

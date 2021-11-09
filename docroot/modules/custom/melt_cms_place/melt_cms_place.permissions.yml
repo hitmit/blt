@@ -1,0 +1,4 @@
+administer melt_cms_place configuration:
+  title: 'Administer melt_cms_place configuration'
+  description: 'Optional description.'
+  restrict access: true

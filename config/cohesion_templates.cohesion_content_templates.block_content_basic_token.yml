@@ -1,0 +1,16 @@
+uuid: ca332d00-97f1-4bbe-b6aa-c4a318a1524c
+langcode: en
+status: false
+dependencies: {  }
+id: block_content_basic_token
+label: 'Token (Block_content, Basic block)'
+last_entity_update: entityupdate_0031
+modified: false
+selectable: false
+custom: false
+twig_template: null
+default: false
+entity_type: block_content
+bundle: basic
+view_mode: token
+master_template: ''

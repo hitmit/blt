@@ -1,0 +1,11 @@
+uuid: eb94755e-07be-435f-b484-720bde03a894
+langcode: en
+status: true
+dependencies:
+  module:
+    - bulk_update_fields
+id: bulk_update_fields_on_cohesion_view_templates
+label: 'Bulk Update View template Fields'
+type: cohesion_view_templates
+plugin: bulk_update_fields_action_base
+configuration: {  }

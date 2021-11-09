@@ -1,0 +1,23 @@
+uuid: d81d312e-2fe2-4bd9-87f0-cb1c83656f16
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_seo_description
+    - node.type.page
+  module:
+    - text
+_core:
+  default_config_hash: 8wroGx6dtfG4ernIfKJrW78kcyx5oLMiULeonW-zsX0
+id: node.page.field_seo_description
+field_name: field_seo_description
+entity_type: node
+bundle: page
+label: 'SEO Description'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: text_long

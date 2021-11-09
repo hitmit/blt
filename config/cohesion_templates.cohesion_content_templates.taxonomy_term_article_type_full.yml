@@ -1,0 +1,16 @@
+uuid: 32beb8d8-605f-42ff-a60a-525ea753662c
+langcode: en
+status: false
+dependencies: {  }
+id: taxonomy_term_article_type_full
+label: 'Taxonomy term page (Taxonomy_term, Article Type)'
+last_entity_update: entityupdate_0031
+modified: false
+selectable: false
+custom: false
+twig_template: null
+default: false
+entity_type: taxonomy_term
+bundle: article_type
+view_mode: full
+master_template: ''

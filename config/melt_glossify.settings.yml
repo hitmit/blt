@@ -1,0 +1,5 @@
+tippyjs:
+  yaml: "delay: 100\r\narrow: true\r\narrowType: 'round'\r\nsize: 'large'\r\nduration: 500\r\nanimation: 'scale'"
+  color: ''
+_core:
+  default_config_hash: GBeNUL-3VzC9wRI06RN-AqOG2uQEK5UPe3DABHRVfJE

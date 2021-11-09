@@ -1,0 +1,313 @@
+uuid: 75e1bb54-38e6-459d-a590-0177739db14a
+langcode: en
+status: true
+dependencies: {  }
+id: cpt_custom_javascript
+label: 'Custom Javascript'
+json_values:
+  canvas:
+    -
+      type: item
+      uid: cohesion_javascript_element
+      isCustom: true
+      title: 'Custom Javascript'
+      selected: false
+      status:
+        collapsed: true
+      uuid: 1c38107e-c4de-4acc-99f6-1e7e0d310033
+      parentUid: root
+      isContainer: false
+      children: {  }
+  componentForm:
+    -
+      type: form-field
+      uid: form-textarea
+      title: 'Plain text area'
+      status:
+        collapsed: false
+      uuid: 90849270-4777-4003-97a4-6d8b3d03fb03
+      parentUid: root
+      isContainer: false
+      children: {  }
+    -
+      type: form-field
+      uid: form-select
+      title: Select
+      status:
+        collapsed: false
+      uuid: d09dfb07-e388-4e44-9a8c-943a42604695
+      parentUid: root
+      isContainer: false
+      children: {  }
+    -
+      type: form-container
+      uid: form-accordion
+      title: 'Group accordion'
+      status:
+        collapsed: true
+      options:
+        formBuilder: true
+      uuid: f93f429f-68be-4c6e-a07c-b69401982019
+      parentUid: root
+      isContainer: true
+      children:
+        -
+          type: form-field
+          uid: form-checkbox-toggle
+          title: Toggle
+          status:
+            collapsed: false
+            collapsedParents:
+              - f93f429f-68be-4c6e-a07c-b69401982019
+          uuid: 0c6cd12e-8755-45e5-bb14-2c45503252d8
+          parentUid: form-accordion
+          isContainer: false
+          children: {  }
+        -
+          type: form-field
+          uid: form-textarea
+          title: 'Plain text area'
+          status:
+            collapsed: false
+            collapsedParents:
+              - f93f429f-68be-4c6e-a07c-b69401982019
+          uuid: 454bc5a5-48a7-4d78-b623-12ebaf0c6df6
+          parentUid: form-accordion
+          isContainer: false
+          children: {  }
+    -
+      type: form-container
+      uid: form-accordion
+      title: 'Group accordion'
+      status:
+        collapsed: false
+      options:
+        formBuilder: true
+      uuid: bde7128e-fc3b-4931-bc04-ee13adc70354
+      parentUid: root
+      isContainer: true
+      children:
+        -
+          type: form-field
+          uid: form-input
+          title: Input
+          status:
+            collapsed: false
+          uuid: a8c1b09f-d1ba-48a3-8ede-c06a31db7f32
+          parentUid: form-accordion
+          isContainer: false
+          children: {  }
+        -
+          type: form-field
+          uid: form-textarea
+          title: 'Plain text area'
+          status:
+            collapsed: false
+          uuid: 1dec87d3-4df5-48e8-9ac9-0949ee7e21d9
+          parentUid: form-accordion
+          isContainer: false
+          children: {  }
+  mapper:
+    1c38107e-c4de-4acc-99f6-1e7e0d310033:
+      settings:
+        selectorType: topLevel
+        formDefinition:
+          -
+            formKey: cohesion_javascript_element_settings
+            children:
+              -
+                formKey: cohesion_javascript_element_dynamic
+                breakpoints: {  }
+                activeFields:
+                  -
+                    name: id
+                    active: true
+                  -
+                    name: scope
+                    active: true
+                  -
+                    name: javascript
+                    active: true
+                  -
+                    name: add_jquery
+                    active: true
+                  -
+                    name: libraries
+                    active: true
+                  -
+                    name: drupalSettings
+                    active: true
+        form: null
+  model:
+    1c38107e-c4de-4acc-99f6-1e7e0d310033:
+      settings:
+        title: 'Custom Javascript'
+        scope: '[field.d09dfb07-e388-4e44-9a8c-943a42604695]'
+        add_jquery: '[field.454bc5a5-48a7-4d78-b623-12ebaf0c6df6]'
+        id: '[field.a8c1b09f-d1ba-48a3-8ede-c06a31db7f32]'
+        javascript: '[field.90849270-4777-4003-97a4-6d8b3d03fb03]'
+        libraries: '[field.0c6cd12e-8755-45e5-bb14-2c45503252d8]'
+        drupalSettings: '[field.1dec87d3-4df5-48e8-9ac9-0949ee7e21d9]'
+      context-visibility:
+        contextVisibility:
+          condition: ALL
+      styles:
+        settings:
+          element: cohesion_javascript_element
+    90849270-4777-4003-97a4-6d8b3d03fb03:
+      settings:
+        title: Code
+        type: cohTextarea
+        schema:
+          type: string
+          escape: false
+        machineName: code
+      contextVisibility:
+        condition: ALL
+    d09dfb07-e388-4e44-9a8c-943a42604695:
+      settings:
+        title: Scope
+        type: cohSelect
+        selectType: custom
+        schema:
+          type: string
+        options:
+          -
+            label: Header
+            value: header
+          -
+            label: Footer
+            value: footer
+        machineName: scope
+      contextVisibility:
+        condition: ALL
+      model:
+        value: footer
+    f93f429f-68be-4c6e-a07c-b69401982019:
+      settings:
+        title: 'Add JS Dependencies'
+        type: cohAccordion
+        htmlClass: 'coh-accordion-panel-body--bleed coh-accordion-panel-body--dark'
+        isOpen: false
+      contextVisibility:
+        condition: ALL
+    0c6cd12e-8755-45e5-bb14-2c45503252d8:
+      settings:
+        title: 'Add jQuery'
+        type: checkboxToggle
+        schema:
+          type: string
+        toggleType: boolean
+        machineName: add-jquery
+      contextVisibility:
+        condition: ALL
+      model:
+        value: '{{trueValue}}'
+    454bc5a5-48a7-4d78-b623-12ebaf0c6df6:
+      settings:
+        title: 'Additional Libraries'
+        type: cohTextarea
+        schema:
+          type: string
+          escape: false
+        placeholder: 'One per line'
+        machineName: additional-libraries
+      contextVisibility:
+        condition: ALL
+    bde7128e-fc3b-4931-bc04-ee13adc70354:
+      settings:
+        title: drupalSettings
+        type: cohAccordion
+        htmlClass: 'coh-accordion-panel-body--bleed coh-accordion-panel-body--dark'
+        isOpen: false
+      contextVisibility:
+        condition: ALL
+    a8c1b09f-d1ba-48a3-8ede-c06a31db7f32:
+      settings:
+        title: ID
+        schema:
+          type: string
+          escape: true
+        machineName: id
+      contextVisibility:
+        condition: ALL
+    1dec87d3-4df5-48e8-9ac9-0949ee7e21d9:
+      settings:
+        title: JSON
+        type: cohTextarea
+        schema:
+          type: string
+          escape: false
+        placeholder: 'Valid JSON'
+        machineName: json
+      contextVisibility:
+        condition: ALL
+      model:
+        value: ''
+  previewModel:
+    90849270-4777-4003-97a4-6d8b3d03fb03: {  }
+    f93f429f-68be-4c6e-a07c-b69401982019: {  }
+    454bc5a5-48a7-4d78-b623-12ebaf0c6df6: {  }
+    0c6cd12e-8755-45e5-bb14-2c45503252d8: {  }
+    bde7128e-fc3b-4931-bc04-ee13adc70354: {  }
+    a8c1b09f-d1ba-48a3-8ede-c06a31db7f32: {  }
+    1dec87d3-4df5-48e8-9ac9-0949ee7e21d9: {  }
+    d09dfb07-e388-4e44-9a8c-943a42604695: {  }
+    1c38107e-c4de-4acc-99f6-1e7e0d310033:
+      settings:
+        scope: footer
+        add_jquery: true
+  variableFields:
+    90849270-4777-4003-97a4-6d8b3d03fb03: {  }
+    f93f429f-68be-4c6e-a07c-b69401982019: {  }
+    454bc5a5-48a7-4d78-b623-12ebaf0c6df6: {  }
+    0c6cd12e-8755-45e5-bb14-2c45503252d8: {  }
+    bde7128e-fc3b-4931-bc04-ee13adc70354: {  }
+    a8c1b09f-d1ba-48a3-8ede-c06a31db7f32: {  }
+    1dec87d3-4df5-48e8-9ac9-0949ee7e21d9: {  }
+    d09dfb07-e388-4e44-9a8c-943a42604695: {  }
+    1c38107e-c4de-4acc-99f6-1e7e0d310033:
+      - settings.id
+      - settings.scope
+      - settings.javascript
+      - settings.add_jquery
+      - settings.libraries
+      - settings.drupalSettings
+  meta:
+    fieldHistory:
+      -
+        uuid: 90849270-4777-4003-97a4-6d8b3d03fb03
+        type: form-textarea
+        machineName: code
+      -
+        uuid: d09dfb07-e388-4e44-9a8c-943a42604695
+        type: form-select
+        machineName: scope
+      -
+        uuid: 0c6cd12e-8755-45e5-bb14-2c45503252d8
+        type: form-checkbox-toggle
+        machineName: add-jquery
+      -
+        uuid: 454bc5a5-48a7-4d78-b623-12ebaf0c6df6
+        type: form-textarea
+        machineName: additional-libraries
+      -
+        uuid: a8c1b09f-d1ba-48a3-8ede-c06a31db7f32
+        type: form-input
+        machineName: id
+      -
+        uuid: 1dec87d3-4df5-48e8-9ac9-0949ee7e21d9
+        type: form-textarea
+        machineName: json
+json_mapper: {  }
+last_entity_update: entityupdate_0031
+locked: false
+modified: true
+selectable: true
+category: cpt_cat_general_components
+preview_image: 'public://element-preview-images/js.png'
+has_quick_edit: true
+entity_type_access: {  }
+bundle_access: {  }
+twig_template: component--cohesion-cpt-custom-javascript
+weight: 0

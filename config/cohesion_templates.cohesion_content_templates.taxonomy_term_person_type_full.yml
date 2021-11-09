@@ -1,0 +1,16 @@
+uuid: 69de3a8c-feb1-4f8f-941a-569b9efb697c
+langcode: en
+status: false
+dependencies: {  }
+id: taxonomy_term_person_type_full
+label: 'Taxonomy term page (Taxonomy_term, Person Type)'
+last_entity_update: entityupdate_0031
+modified: false
+selectable: false
+custom: false
+twig_template: null
+default: false
+entity_type: taxonomy_term
+bundle: person_type
+view_mode: full
+master_template: ''

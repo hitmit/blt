@@ -1,0 +1,16 @@
+uuid: 5f658aad-4a01-4383-837c-86508fc45d9c
+langcode: en
+status: false
+dependencies: {  }
+id: node_person_search_index
+label: 'Search index (Node, Person)'
+last_entity_update: entityupdate_0031
+modified: false
+selectable: false
+custom: false
+twig_template: null
+default: false
+entity_type: node
+bundle: person
+view_mode: search_index
+master_template: ''

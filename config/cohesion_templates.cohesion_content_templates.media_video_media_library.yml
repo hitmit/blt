@@ -1,0 +1,16 @@
+uuid: f4c95c2e-c30f-4261-b69f-f0569d63f996
+langcode: en
+status: false
+dependencies: {  }
+id: media_video_media_library
+label: 'Media library (Media, Video)'
+last_entity_update: entityupdate_0031
+modified: false
+selectable: false
+custom: false
+twig_template: null
+default: false
+entity_type: media
+bundle: video
+view_mode: media_library
+master_template: ''

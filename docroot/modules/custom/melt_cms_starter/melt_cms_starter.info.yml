@@ -1,0 +1,13 @@
+name: 'melts Modified version of Acquia CMS Starter'
+package: 'meltmedia'
+description: 'Contains the example content for demonstration.'
+core_version_requirement: ^9
+type: module
+dependencies:
+  - drupal:acquia_cms_document
+  - drupal:acquia_cms_video
+  - melt_cms_event:melt_cms_event
+  - melt_cms_page:melt_cms_page
+  - drupal:acquia_cms_site_studio
+  - drupal:default_content
+  - drupal:config_rewrite

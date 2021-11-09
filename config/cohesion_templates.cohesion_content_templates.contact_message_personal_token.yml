@@ -1,0 +1,16 @@
+uuid: 29840d55-c361-4a9f-85c4-25051562bafd
+langcode: en
+status: false
+dependencies: {  }
+id: contact_message_personal_token
+label: 'Token (Contact_message, Personal contact form)'
+last_entity_update: entityupdate_0031
+modified: false
+selectable: false
+custom: false
+twig_template: null
+default: false
+entity_type: contact_message
+bundle: personal
+view_mode: token
+master_template: ''

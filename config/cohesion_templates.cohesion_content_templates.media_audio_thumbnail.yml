@@ -1,0 +1,16 @@
+uuid: 7cbad694-16d2-431e-ac41-3efdf088d1c0
+langcode: en
+status: false
+dependencies: {  }
+id: media_audio_thumbnail
+label: 'Thumbnail (Media, Audio)'
+last_entity_update: entityupdate_0031
+modified: false
+selectable: false
+custom: false
+twig_template: null
+default: false
+entity_type: media
+bundle: audio
+view_mode: thumbnail
+master_template: ''
